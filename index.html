@@ -3,196 +3,177 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Белая дача — Заказ овощей</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Белая дача — Доставка овощей</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     
     :root {
-      --green: #2E7D32;
-      --green-light: #4CAF50;
-      --green-dark: #1B5E20;
-      --orange: #FF6D00;
-      --orange-light: #FF9800;
-      --bg: #F8F9FA;
-      --card: #FFFFFF;
-      --text: #1A1A1A;
-      --text-secondary: #6B7280;
-      --border: #E5E7EB;
-      --shadow: 0 2px 12px rgba(0,0,0,0.08);
-      --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
-      --radius: 16px;
-      --radius-sm: 12px;
+      --accent: #2E7D32;
+      --accent-light: #43A047;
+      --accent-dark: #1B5E20;
+      --cta: #FF6D00;
+      --cta-hover: #E65100;
+      --bg: #FAFAFA;
+      --surface: #FFFFFF;
+      --text: #1C1C1E;
+      --text-sec: #8E8E93;
+      --border: #F2F2F7;
+      --radius: 20px;
+      --radius-lg: 28px;
     }
     
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      overflow-x: hidden;
     }
 
-    /* Header */
-    .header {
-      background: linear-gradient(135deg, var(--green) 0%, var(--green-light) 100%);
-      color: white;
-      padding: 20px 20px 24px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 4px 20px rgba(46,125,50,0.3);
+    /* Hero */
+    .hero {
+      background: linear-gradient(180deg, var(--accent) 0%, var(--accent-light) 100%);
+      padding: 48px 24px 32px;
+      position: relative;
+      overflow: hidden;
     }
-    .header-top {
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -30%;
+      width: 80%;
+      height: 150%;
+      background: radial-gradient(ellipse, rgba(255,255,255,0.1) 0%, transparent 70%);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      backdrop-filter: blur(10px);
+    }
+    .hero h1 {
+      color: white;
+      font-size: 32px;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+    .hero p {
+      color: rgba(255,255,255,0.85);
+      font-size: 16px;
+      line-height: 1.4;
+      margin-bottom: 24px;
+    }
+    .hero-stats {
+      display: flex;
+      gap: 24px;
+    }
+    .hero-stat { text-align: center; }
+    .hero-stat-val {
+      color: white;
+      font-size: 20px;
+      font-weight: 800;
+    }
+    .hero-stat-label {
+      color: rgba(255,255,255,0.7);
+      font-size: 11px;
+      margin-top: 2px;
+    }
+
+    /* Horizontal scroll products */
+    .category-section { padding: 24px 0 0; }
+    .category-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding: 0 20px;
       margin-bottom: 16px;
     }
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .logo-icon {
-      width: 42px;
-      height: 42px;
-      background: rgba(255,255,255,0.2);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      backdrop-filter: blur(10px);
-    }
-    .logo-text h1 {
-      font-size: 18px;
+    .category-title {
+      font-size: 20px;
       font-weight: 700;
-      line-height: 1.2;
     }
-    .logo-text span {
-      font-size: 12px;
-      opacity: 0.85;
-      font-weight: 400;
-    }
-    .header-cart {
-      position: relative;
-      width: 44px;
-      height: 44px;
-      background: rgba(255,255,255,0.2);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      cursor: pointer;
-      backdrop-filter: blur(10px);
-      transition: transform 0.2s;
-    }
-    .header-cart:active { transform: scale(0.95); }
-    .header-cart .badge {
-      position: absolute;
-      top: -4px;
-      right: -4px;
-      background: var(--orange);
-      color: white;
-      border-radius: 10px;
-      min-width: 20px;
-      height: 20px;
-      font-size: 11px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 4px;
-      box-shadow: 0 2px 8px rgba(255,109,0,0.4);
-    }
-
-    /* Search */
-    .search-bar {
-      background: rgba(255,255,255,0.15);
-      border-radius: 12px;
-      padding: 10px 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      backdrop-filter: blur(10px);
-    }
-    .search-bar input {
-      background: none;
-      border: none;
-      color: white;
+    .see-all {
+      color: var(--accent);
       font-size: 14px;
-      width: 100%;
-      outline: none;
+      font-weight: 600;
+      text-decoration: none;
     }
-    .search-bar input::placeholder { color: rgba(255,255,255,0.6); }
-    .search-bar .search-icon { font-size: 16px; opacity: 0.7; }
-
-    /* Categories */
-    .categories {
+    
+    .products-scroll {
       display: flex;
-      gap: 8px;
-      padding: 16px 20px;
+      gap: 16px;
+      padding: 0 20px;
       overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
     }
-    .categories::-webkit-scrollbar { display: none; }
-    .cat-btn {
-      padding: 8px 16px;
-      border-radius: 20px;
-      border: 1.5px solid var(--border);
-      background: white;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text-secondary);
-      white-space: nowrap;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .cat-btn.active {
-      background: var(--green);
-      color: white;
-      border-color: var(--green);
-    }
-
-    /* Products */
-    .section-title {
-      font-size: 18px;
-      font-weight: 700;
-      padding: 0 20px;
-      margin-bottom: 12px;
-    }
-    .products-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      padding: 0 20px;
-    }
+    .products-scroll::-webkit-scrollbar { display: none; }
+    
     .product-card {
-      background: var(--card);
+      flex: 0 0 160px;
+      background: var(--surface);
       border-radius: var(--radius);
       overflow: hidden;
-      box-shadow: var(--shadow);
-      transition: transform 0.2s, box-shadow 0.2s;
+      scroll-snap-align: start;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
       position: relative;
     }
-    .product-card:active { transform: scale(0.98); }
+    .product-card-wide {
+      flex: 0 0 280px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 12px;
+      gap: 12px;
+    }
+    .product-card-wide .product-img-wrap {
+      width: 100px;
+      height: 100px;
+      flex-shrink: 0;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .product-card-wide .product-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .product-card-wide .product-info {
+      flex: 1;
+      padding: 0;
+    }
+
+    .product-img-wrap {
+      width: 100%;
+      height: 130px;
+      overflow: hidden;
+      position: relative;
+    }
     .product-img {
       width: 100%;
-      height: 140px;
+      height: 100%;
       object-fit: cover;
-      display: block;
     }
-    .product-img-placeholder {
-      width: 100%;
-      height: 140px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 56px;
-      background: linear-gradient(135deg, #E8F5E9 0%, #F1F8E9 100%);
+    .product-badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: rgba(255,255,255,0.95);
+      color: var(--accent);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 8px;
     }
     .product-info { padding: 12px; }
     .product-name {
@@ -201,9 +182,9 @@
       margin-bottom: 4px;
       line-height: 1.3;
     }
-    .product-note {
-      font-size: 11px;
-      color: var(--text-secondary);
+    .product-sub {
+      font-size: 12px;
+      color: var(--text-sec);
       margin-bottom: 8px;
       line-height: 1.3;
     }
@@ -213,20 +194,20 @@
       justify-content: space-between;
     }
     .product-price {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--green);
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
     }
     .product-price small {
       font-size: 11px;
-      font-weight: 400;
-      color: var(--text-secondary);
+      font-weight: 500;
+      color: var(--text-sec);
     }
     .add-btn {
       width: 36px;
       height: 36px;
       border-radius: 50%;
-      background: var(--green);
+      background: var(--accent);
       color: white;
       border: none;
       font-size: 20px;
@@ -234,104 +215,140 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.15s, background 0.15s;
-      box-shadow: 0 2px 8px rgba(46,125,50,0.3);
+      transition: all 0.15s;
+      box-shadow: 0 4px 12px rgba(46,125,50,0.3);
     }
-    .add-btn:active { transform: scale(0.9); background: var(--green-dark); }
-    .add-btn.added { background: var(--orange); }
-
-    .qty-control {
+    .add-btn:active { transform: scale(0.9); }
+    .qty-inline {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
-    .qty-btn {
-      width: 32px;
-      height: 32px;
+    .qty-inline .qty-btn {
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
-      border: 1.5px solid var(--border);
-      background: white;
+      border: none;
       font-size: 16px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+    .qty-inline .qty-btn.minus {
+      background: var(--border);
       color: var(--text);
     }
-    .qty-btn:active { background: var(--bg); }
-    .qty-val {
+    .qty-inline .qty-btn.plus {
+      background: var(--accent);
+      color: white;
+    }
+    .qty-inline .qty-num {
       font-size: 14px;
-      font-weight: 600;
-      min-width: 20px;
+      font-weight: 700;
+      min-width: 18px;
       text-align: center;
     }
 
-    /* Cart FAB */
-    .cart-fab {
+    /* Cart bottom bar */
+    .cart-bar {
       position: fixed;
-      bottom: 24px;
-      right: 20px;
-      background: var(--orange);
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--accent);
       color: white;
-      border: none;
-      border-radius: 16px;
-      padding: 14px 20px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 4px 20px rgba(255,109,0,0.4);
-      z-index: 200;
+      padding: 16px 24px;
       display: flex;
       align-items: center;
-      gap: 8px;
-      transition: transform 0.2s;
+      justify-content: space-between;
+      z-index: 300;
+      box-shadow: 0 -4px 20px rgba(46,125,50,0.3);
+      cursor: pointer;
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
     }
-    .cart-fab:active { transform: scale(0.95); }
-    .cart-fab .fab-badge {
-      background: white;
-      color: var(--orange);
+    .cart-bar.visible { transform: translateY(0); }
+    .cart-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .cart-icon {
+      width: 44px;
+      height: 44px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      position: relative;
+    }
+    .cart-icon .badge {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: var(--cta);
+      color: white;
       border-radius: 10px;
-      min-width: 22px;
-      height: 22px;
-      font-size: 12px;
+      min-width: 20px;
+      height: 20px;
+      font-size: 11px;
       font-weight: 700;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 0 4px;
     }
-
-    /* Pages */
-    .page { display: none; padding-bottom: 100px; }
-    .page.active { display: block; }
-
-    /* Cart Page */
-    .cart-header {
+    .cart-bar-info { font-size: 13px; font-weight: 500; opacity: 0.8; }
+    .cart-bar-price { font-size: 18px; font-weight: 800; }
+    .cart-bar-btn {
       background: white;
-      padding: 16px 20px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 50;
-    }
-    .back-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
+      color: var(--accent);
       border: none;
-      background: var(--bg);
-      font-size: 18px;
+      border-radius: 14px;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 700;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
-    .cart-header h2 { font-size: 18px; font-weight: 700; }
-    
-    .cart-items { padding: 16px 20px; }
+
+    /* Cart overlay */
+    .cart-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 400;
+      display: none;
+      align-items: flex-end;
+      backdrop-filter: blur(4px);
+    }
+    .cart-overlay.active { display: flex; }
+    .cart-sheet {
+      background: var(--surface);
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 24px 20px 40px;
+      animation: slideUp 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+    .cart-sheet-handle {
+      width: 36px;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin: 0 auto 20px;
+    }
+    .cart-sheet-title {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
     .cart-item {
       display: flex;
       gap: 12px;
@@ -341,146 +358,168 @@
     }
     .cart-item:last-child { border-bottom: none; }
     .cart-item-img {
-      width: 64px;
-      height: 64px;
-      border-radius: var(--radius-sm);
-      object-fit: cover;
-      background: #E8F5E9;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 32px;
+      width: 60px;
+      height: 60px;
+      border-radius: 14px;
+      overflow: hidden;
       flex-shrink: 0;
+    }
+    .cart-item-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
     .cart-item-info { flex: 1; }
     .cart-item-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-    .cart-item-price { font-size: 13px; color: var(--text-secondary); }
-    .cart-item-right { text-align: right; }
-    .cart-item-total { font-size: 15px; font-weight: 700; color: var(--green); margin-bottom: 6px; }
-    
-    .cart-summary {
-      background: white;
-      margin: 0 20px;
-      border-radius: var(--radius);
-      padding: 16px;
-      box-shadow: var(--shadow);
+    .cart-item-price { font-size: 16px; font-weight: 700; color: var(--accent); }
+    .cart-empty {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-sec);
     }
-    .cart-summary-row {
+    .cart-empty-icon { font-size: 48px; margin-bottom: 12px; }
+
+    /* Order form slide-up */
+    .order-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 500;
+      display: none;
+    }
+    .order-overlay.active { display: block; }
+    .order-sheet {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      z-index: 501;
+      padding: 24px 20px 40px;
+      max-height: 90vh;
+      overflow-y: auto;
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    .order-sheet.active { transform: translateY(0); }
+    .order-title {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 20px;
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      margin-bottom: 8px;
-      font-size: 14px;
-      color: var(--text-secondary);
     }
-    .cart-summary-row.total {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--text);
-      margin-top: 8px;
-      padding-top: 12px;
-      border-top: 1px solid var(--border);
-      margin-bottom: 0;
-    }
-    .cart-summary-row.total .amount { color: var(--green); }
-
-    .checkout-btn {
-      width: 100%;
-      padding: 16px;
-      background: linear-gradient(135deg, var(--green) 0%, var(--green-light) 100%);
-      color: white;
+    .order-close {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--border);
       border: none;
-      border-radius: var(--radius);
       font-size: 16px;
-      font-weight: 600;
       cursor: pointer;
-      margin-top: 16px;
-      transition: transform 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .checkout-btn:active { transform: scale(0.98); }
-
-    /* Order Form */
-    .form-page { padding: 0 20px 100px; }
     .form-group { margin-bottom: 16px; }
     .form-group label {
       display: block;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
+      color: var(--text-sec);
       margin-bottom: 6px;
-      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
-    .form-group input, .form-group textarea, .form-group select {
+    .form-group input, .form-group textarea {
       width: 100%;
-      padding: 14px;
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      border: 2px solid var(--border);
+      border-radius: 14px;
       font-size: 15px;
       font-family: inherit;
       outline: none;
       transition: border-color 0.2s;
-      background: white;
+      background: var(--bg);
     }
     .form-group input:focus, .form-group textarea:focus {
-      border-color: var(--green);
+      border-color: var(--accent);
+      background: white;
     }
     .form-group textarea { resize: vertical; min-height: 80px; }
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 16px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: transform 0.15s, background 0.15s;
+    }
+    .submit-btn:active { transform: scale(0.98); background: var(--accent-dark); }
+    .submit-btn:disabled { background: var(--text-sec); }
 
     /* Success */
-    .success-page {
+    .success-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 600;
+      background: var(--surface);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
       text-align: center;
-      padding: 60px 20px;
     }
-    .success-icon {
+    .success-overlay.active { display: flex; }
+    .success-check {
       width: 80px;
       height: 80px;
-      background: linear-gradient(135deg, var(--green) 0%, var(--green-light) 100%);
+      background: var(--accent);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 40px;
-      margin: 0 auto 24px;
-      box-shadow: 0 8px 30px rgba(46,125,50,0.3);
+      color: white;
+      margin-bottom: 24px;
+      animation: popIn 0.4s cubic-bezier(0.4,0,0.2,1);
     }
-    .success-title { font-size: 24px; font-weight: 700; margin-bottom: 12px; }
-    .success-text { font-size: 15px; color: var(--text-secondary); line-height: 1.6; }
-    .success-order {
+    @keyframes popIn {
+      0% { transform: scale(0); }
+      80% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    .success-title { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+    .success-sub { font-size: 15px; color: var(--text-sec); line-height: 1.5; margin-bottom: 24px; }
+    .success-details {
       background: var(--bg);
       border-radius: var(--radius);
       padding: 16px;
-      margin: 20px 0;
+      width: 100%;
       text-align: left;
+      margin-bottom: 24px;
     }
-    .success-order h3 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
-    .success-order p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
-
-    .new-order-btn {
+    .success-details h4 { font-size: 13px; font-weight: 600; color: var(--text-sec); margin-bottom: 8px; }
+    .success-details p { font-size: 14px; line-height: 1.5; }
+    .done-btn {
       width: 100%;
       padding: 16px;
-      background: var(--green);
+      background: var(--accent);
       color: white;
       border: none;
-      border-radius: var(--radius);
+      border-radius: 16px;
       font-size: 16px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
-      margin-top: 20px;
     }
-
-    /* Empty cart */
-    .empty-cart {
-      text-align: center;
-      padding: 60px 20px;
-      color: var(--text-secondary);
-    }
-    .empty-cart .icon { font-size: 64px; margin-bottom: 16px; }
-    .empty-cart p { font-size: 15px; }
-
-    /* Animations */
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .product-card { animation: slideUp 0.3s ease-out; }
   </style>
 </head>
 <body>
@@ -489,283 +528,299 @@
 <script src="https://st.max.ru/js/max-web-app.js"></script>
 
 <div id="app">
-  <!-- Каталог -->
-  <div id="page-catalog" class="page active">
-    <div class="header">
-      <div class="header-top">
-        <div class="logo">
-          <div class="logo-icon">🌿</div>
-          <div class="logo-text">
-            <h1>Белая дача</h1>
-            <span>Свежие овощи с грядки</span>
-          </div>
+  <!-- Главная -->
+  <div id="page-home">
+    <div class="hero">
+      <div class="hero-badge">🚀 Свежие овощи с доставкой</div>
+      <h1>Белая дача</h1>
+      <p>Собрано сегодня на грядке.<br>Доставим за 2 часа.</p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-val">9+</div>
+          <div class="hero-stat-label">овощей</div>
         </div>
-        <div class="header-cart" onclick="showPage('cart')">
-          🛒
-          <span class="badge" id="header-cart-count" style="display:none;">0</span>
+        <div class="hero-stat">
+          <div class="hero-stat-val">2ч</div>
+          <div class="hero-stat-label">доставка</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">₽₽</div>
+          <div class="hero-stat-label">цены</div>
         </div>
       </div>
-      <div class="search-bar">
-        <span class="search-icon">🔍</span>
-        <input type="text" placeholder="Найти овощи..." id="search-input" oninput="filterProducts()">
+    </div>
+
+    <!-- Популярное -->
+    <div class="category-section">
+      <div class="category-header">
+        <div class="category-title">🔥 Популярное</div>
       </div>
+      <div class="products-scroll" id="scroll-popular"></div>
     </div>
 
-    <div class="categories">
-      <div class="cat-btn active" onclick="filterCategory('all', this)">Все</div>
-      <div class="cat-btn" onclick="filterCategory('vegetables', this)">🥬 Овощи</div>
-      <div class="cat-btn" onclick="filterCategory('greens', this)">🌿 Зелень</div>
-      <div class="cat-btn" onclick="filterCategory('fruits', this)">🍉 Фрукты</div>
+    <!-- Овощи -->
+    <div class="category-section">
+      <div class="category-header">
+        <div class="category-title">🥬 Овощи</div>
+      </div>
+      <div class="products-scroll" id="scroll-vegetables"></div>
     </div>
 
-    <div class="section-title">Каталог</div>
-    <div id="products-grid" class="products-grid"></div>
-  </div>
+    <!-- Зелень и фрукты -->
+    <div class="category-section">
+      <div class="category-header">
+        <div class="category-title">🌿 Зелень</div>
+      </div>
+      <div class="products-scroll" id="scroll-greens"></div>
+    </div>
 
-  <!-- Корзина -->
-  <div id="page-cart" class="page">
-    <div class="cart-header">
-      <button class="back-btn" onclick="showPage('catalog')">←</button>
-      <h2>Корзина</h2>
-    </div>
-    <div id="cart-content"></div>
-  </div>
-
-  <!-- Оформление -->
-  <div id="page-order" class="page">
-    <div class="cart-header">
-      <button class="back-btn" onclick="showPage('cart')">←</button>
-      <h2>Оформление заказа</h2>
-    </div>
-    <div class="form-page" style="padding-top: 16px;">
-      <form id="order-form" onsubmit="submitOrder(event)">
-        <div class="form-group">
-          <label>Ваше имя *</label>
-          <input type="text" id="f-name" required placeholder="Иван Иванов">
-        </div>
-        <div class="form-group">
-          <label>Телефон *</label>
-          <input type="tel" id="f-phone" required placeholder="+7 (999) 999-99-99">
-        </div>
-        <div class="form-group">
-          <label>Адрес доставки *</label>
-          <textarea id="f-address" required placeholder="Город, улица, дом, квартира, подъезд, код домофона"></textarea>
-        </div>
-        <div class="form-group">
-          <label>Дата доставки *</label>
-          <input type="date" id="f-date" required>
-        </div>
-        <div class="form-group">
-          <label>Пожелания</label>
-          <textarea id="f-comment" placeholder="Удобное время, примечания к заказу..."></textarea>
-        </div>
-        <button type="submit" class="checkout-btn" id="submit-btn">Подтвердить заказ</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Успех -->
-  <div id="page-success" class="page">
-    <div class="success-page">
-      <div class="success-icon">✓</div>
-      <div class="success-title">Заказ принят!</div>
-      <div class="success-text" id="success-text"></div>
-      <div class="success-order" id="success-order"></div>
-      <button class="new-order-btn" onclick="resetAndGoHome()">Заказать ещё</button>
-    </div>
+    <div style="height: 100px;"></div>
   </div>
 </div>
 
-<!-- Cart FAB -->
-<button class="cart-fab" id="cart-fab" onclick="showPage('cart')" style="display:none;">
-  🛒 Корзина
-  <span class="fab-badge" id="fab-count">0</span>
-</button>
+<!-- Cart bar -->
+<div class="cart-bar" id="cart-bar" onclick="openCart()">
+  <div class="cart-bar-left">
+    <div class="cart-icon">
+      🛒
+      <span class="badge" id="cart-bar-count">0</span>
+    </div>
+    <div>
+      <div class="cart-bar-info">Корзина</div>
+      <div class="cart-bar-price" id="cart-bar-price">0 ₽</div>
+    </div>
+  </div>
+  <button class="cart-bar-btn" onclick="event.stopPropagation(); openOrder()">Заказать →</button>
+</div>
+
+<!-- Cart overlay -->
+<div class="cart-overlay" id="cart-overlay" onclick="if(event.target===this)closeCart()">
+  <div class="cart-sheet">
+    <div class="cart-sheet-handle"></div>
+    <div class="cart-sheet-title">Корзина</div>
+    <div id="cart-items"></div>
+  </div>
+</div>
+
+<!-- Order overlay -->
+<div class="order-overlay" id="order-overlay"></div>
+<div class="order-sheet" id="order-sheet">
+  <div class="order-title">
+    <span>Оформление заказа</span>
+    <button class="order-close" onclick="closeOrder()">✕</button>
+  </div>
+  <form id="order-form" onsubmit="submitOrder(event)">
+    <div class="form-group">
+      <label>Имя</label>
+      <input type="text" id="f-name" required placeholder="Как к вам обращаться?">
+    </div>
+    <div class="form-group">
+      <label>Телефон</label>
+      <input type="tel" id="f-phone" required placeholder="+7 (___) ___-__-__">
+    </div>
+    <div class="form-group">
+      <label>Адрес доставки</label>
+      <textarea id="f-address" required placeholder="Город, улица, дом, квартира..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Когда доставить?</label>
+      <input type="date" id="f-date" required>
+    </div>
+    <div class="form-group">
+      <label>Комментарий</label>
+      <textarea id="f-comment" placeholder="Пожелания к заказу..."></textarea>
+    </div>
+    <button type="submit" class="submit-btn" id="submit-btn">Подтвердить заказ</button>
+  </form>
+</div>
+
+<!-- Success -->
+<div class="success-overlay" id="success-overlay">
+  <div class="success-check">✓</div>
+  <div class="success-title">Заказ принят!</div>
+  <div class="success-sub" id="success-sub"></div>
+  <div class="success-details" id="success-details"></div>
+  <button class="done-btn" onclick="closeSuccess()">Отлично!</button>
+</div>
 
 <script>
-// ===== КАТАЛОГ =====
 const PRODUCTS = [
-  { id: 1, name: 'Помидоры', emoji: '🍅', price: 500, unitName: 'ведро', note: 'Спелые, с грядки', category: 'vegetables', img: 'https://images.unsplash.com/photo-1546470427-e2c4d5abdd4b?w=400&h=300&fit=crop' },
-  { id: 2, name: 'Огурцы', emoji: '🥒', price: 500, unitName: 'ведро', note: 'Хрустящие, свежие', category: 'vegetables', img: 'https://images.unsplash.com/photo-1449300079323-02e209d9d3a6?w=400&h=300&fit=crop' },
-  { id: 3, name: 'Перец болгарский', emoji: '🫑', price: 250, unitName: 'ведро', note: 'Сочный, сладкий', category: 'vegetables', img: 'https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=400&h=300&fit=crop' },
-  { id: 4, name: 'Перец острый', emoji: '🌶️', price: 100, unitName: '12 шт', note: 'Острый, ароматный', category: 'vegetables', img: 'https://images.unsplash.com/photo-1583623025817-d180a2221d0a?w=400&h=300&fit=crop' },
-  { id: 5, name: 'Баклажаны', emoji: '🍆', price: 300, unitName: 'ведро', note: 'Отборные', category: 'vegetables', img: 'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=400&h=300&fit=crop' },
-  { id: 6, name: 'Картошка', emoji: '🥔', price: 200, unitName: 'ведро', note: 'Молодой картофель', category: 'vegetables', img: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&h=300&fit=crop' },
-  { id: 7, name: 'Кукуруза', emoji: '🌽', price: 100, unitName: '3 шт', note: 'Сладкая, молодая', category: 'vegetables', img: 'https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=400&h=300&fit=crop' },
-  { id: 8, name: 'Кабачок', emoji: '🥒', price: 100, unitName: '3 шт', note: 'Небольшие, нежные', category: 'vegetables', img: 'https://images.unsplash.com/photo-1574281143790-752264c0251f?w=400&h=300&fit=crop' },
-  { id: 9, name: 'Арбуз', emoji: '🍉', price: 100, unitName: 'шт', note: 'Спелый, сладкий', category: 'fruits', img: 'https://images.unsplash.com/photo-1589984662646-e7b2e4962f18?w=400&h=300&fit=crop' },
-  { id: 10, name: 'Укроп', emoji: '🌿', price: 50, unitName: 'пучок', note: 'Ароматный, свежий', category: 'greens', img: 'https://images.unsplash.com/photo-1629157282069-4a0e0633e630?w=400&h=300&fit=crop' },
-  { id: 11, name: 'Петрушка', emoji: '🌿', price: 50, unitName: 'пучок', note: 'Свежая, яркая', category: 'greens', img: 'https://images.unsplash.com/photo-1629157282069-4a0e0633e630?w=400&h=300&fit=crop' },
-  { id: 12, name: 'Лук зелёный', emoji: '🧅', price: 60, unitName: 'пучок', note: 'Сочный, острый', category: 'greens', img: 'https://images.unsplash.com/photo-1618512496248-a07fb9c4f506?w=400&h=300&fit=crop' },
+  { id: 1, name: 'Помидоры', sub: 'Спелые, с грядки', emoji: '🍅', price: 500, unit: 'ведро', img: 'https://images.unsplash.com/photo-1546470427-e2c4d5abdd4b?w=300&h=200&fit=crop', cat: 'popular' },
+  { id: 2, name: 'Огурцы', sub: 'Хрустящие, свежие', emoji: '🥒', price: 500, unit: 'ведро', img: 'https://images.unsplash.com/photo-1449300079323-02e209d9d3a6?w=300&h=200&fit=crop', cat: 'popular' },
+  { id: 3, name: 'Перец болг.', sub: 'Сочный, сладкий', emoji: '🫑', price: 250, unit: 'ведро', img: 'https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=300&h=200&fit=crop', cat: 'popular' },
+  { id: 4, name: 'Перец острый', sub: 'Ароматный', emoji: '🌶️', price: 100, unit: '12 шт', img: 'https://images.unsplash.com/photo-1583623025817-d180a2221d0a?w=300&h=200&fit=crop', cat: 'vegetables' },
+  { id: 5, name: 'Баклажаны', sub: 'Отборные', emoji: '🍆', price: 300, unit: 'ведро', img: 'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=300&h=200&fit=crop', cat: 'vegetables' },
+  { id: 6, name: 'Картошка', sub: 'Молодой картофель', emoji: '🥔', price: 200, unit: 'ведро', img: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=300&h=200&fit=crop', cat: 'popular' },
+  { id: 7, name: 'Кукуруза', sub: 'Сладкая, молодая', emoji: '🌽', price: 100, unit: '3 шт', img: 'https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=300&h=200&fit=crop', cat: 'vegetables' },
+  { id: 8, name: 'Кабачки', sub: 'Небольшие, нежные', emoji: '🥒', price: 100, unit: '3 шт', img: 'https://images.unsplash.com/photo-1574281143790-752264c0251f?w=300&h=200&fit=crop', cat: 'vegetables' },
+  { id: 9, name: 'Арбуз', sub: 'Спелый, сладкий', emoji: '🍉', price: 100, unit: 'шт', img: 'https://images.unsplash.com/photo-1589984662646-e7b2e4962f18?w=300&h=200&fit=crop', cat: 'vegetables' },
+  { id: 10, name: 'Укроп', sub: 'Ароматный', emoji: '🌿', price: 50, unit: 'пучок', img: 'https://images.unsplash.com/photo-1629157282069-4a0e0633e630?w=300&h=200&fit=crop', cat: 'greens' },
+  { id: 11, name: 'Петрушка', sub: 'Свежая, яркая', emoji: '🌿', price: 50, unit: 'пучок', img: 'https://images.unsplash.com/photo-1629157282069-4a0e0633e630?w=300&h=200&fit=crop', cat: 'greens' },
+  { id: 12, name: 'Лук зелёный', sub: 'Сочный, острый', emoji: '🧅', price: 60, unit: 'пучок', img: 'https://images.unsplash.com/photo-1618512496248-a07fb9c4f506?w=300&h=200&fit=crop', cat: 'greens' },
 ];
 
 let cart = {};
-let currentCategory = 'all';
 
 function init() {
-  if (window.WebApp) {
-    window.WebApp.ready();
-    window.WebApp.enableClosingConfirmation();
-  }
+  if (window.WebApp) { window.WebApp.ready(); }
   
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
-  const dateInput = document.getElementById('f-date');
-  dateInput.min = tomorrow.toISOString().split('T')[0];
-  dateInput.value = dateInput.min;
+  document.getElementById('f-date').min = tomorrow.toISOString().split('T')[0];
+  document.getElementById('f-date').value = document.getElementById('f-date').min;
   
-  renderProducts();
+  renderAll();
 }
 
-function renderProducts() {
-  const grid = document.getElementById('products-grid');
-  const search = document.getElementById('search-input')?.value?.toLowerCase() || '';
+function renderAll() {
+  renderScroll('scroll-popular', PRODUCTS.filter(p => p.cat === 'popular'), true);
+  renderScroll('scroll-vegetables', PRODUCTS.filter(p => p.cat === 'vegetables'), false);
+  renderScroll('scroll-greens', PRODUCTS.filter(p => p.cat === 'greens'), false);
+}
+
+function renderScroll(containerId, items, wide) {
+  const container = document.getElementById(containerId);
   
-  let filtered = PRODUCTS;
-  if (currentCategory !== 'all') {
-    filtered = filtered.filter(p => p.category === currentCategory);
-  }
-  if (search) {
-    filtered = filtered.filter(p => p.name.toLowerCase().includes(search));
-  }
-  
-  grid.innerHTML = filtered.map(p => {
+  container.innerHTML = items.map(p => {
     const qty = cart[p.id] || 0;
+    if (wide) {
+      return `
+        <div class="product-card product-card-wide">
+          <div class="product-img-wrap">
+            <img class="product-img" src="${p.img}" alt="${p.name}" loading="lazy" 
+                 onerror="this.style.display='none';this.parentElement.style.background='#E8F5E9';this.parentElement.innerHTML='<span style=\\'font-size:48px;display:flex;align-items:center;justify-content:center;height:100%\\'>${p.emoji}</span>'">
+          </div>
+          <div class="product-info">
+            <div class="product-name">${p.name}</div>
+            <div class="product-sub">${p.sub}</div>
+            <div class="product-bottom">
+              <div class="product-price">${p.price} ₽<small>/${p.unit}</small></div>
+              ${qty > 0 ? `
+                <div class="qty-inline">
+                  <button class="qty-btn minus" onclick="changeQty(${p.id},-1)">−</button>
+                  <span class="qty-num">${qty}</span>
+                  <button class="qty-btn plus" onclick="changeQty(${p.id},1)">+</button>
+                </div>
+              ` : `<button class="add-btn" onclick="addToCart(${p.id})">+</button>`}
+            </div>
+          </div>
+        </div>`;
+    }
+    
     return `
-      <div class="product-card" data-id="${p.id}">
-        ${p.img 
-          ? `<img class="product-img" src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
-          : ''
-        }
-        <div class="product-img-placeholder" style="${p.img ? 'display:none' : ''}">${p.emoji}</div>
+      <div class="product-card">
+        <div class="product-img-wrap">
+          <img class="product-img" src="${p.img}" alt="${p.name}" loading="lazy"
+               onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#E8F5E9,#F1F8E9)';this.parentElement.innerHTML='<span style=\\'font-size:56px;display:flex;align-items:center;justify-content:center;height:100%\\'>${p.emoji}</span>'">
+          ${p.cat === 'popular' ? '<div class="product-badge">🔥 Хит</div>' : ''}
+        </div>
         <div class="product-info">
           <div class="product-name">${p.name}</div>
-          <div class="product-note">${p.note}</div>
+          <div class="product-sub">${p.sub}</div>
           <div class="product-bottom">
-            <div class="product-price">${p.price} ₽ <small>/ ${p.unitName}</small></div>
-            ${qty > 0 
-              ? `<div class="qty-control">
-                  <button class="qty-btn" onclick="changeQty(${p.id}, -1)">−</button>
-                  <span class="qty-val">${qty}</span>
-                  <button class="qty-btn" onclick="changeQty(${p.id}, 1)">+</button>
-                 </div>`
-              : `<button class="add-btn" onclick="addToCart(${p.id})">+</button>`
-            }
+            <div class="product-price">${p.price} ₽<small>/${p.unit}</small></div>
+            ${qty > 0 ? `
+              <div class="qty-inline">
+                <button class="qty-btn minus" onclick="changeQty(${p.id},-1)">−</button>
+                <span class="qty-num">${qty}</span>
+                <button class="qty-btn plus" onclick="changeQty(${p.id},1)">+</button>
+              </div>
+            ` : `<button class="add-btn" onclick="addToCart(${p.id})">+</button>`}
           </div>
         </div>
-      </div>
-    `;
+      </div>`;
   }).join('');
 }
 
 function addToCart(id) {
   cart[id] = (cart[id] || 0) + 1;
-  renderProducts();
-  updateCartUI();
-  if (window.WebApp?.HapticFeedback) {
-    window.WebApp.HapticFeedback.impactOccurred('light');
-  }
+  renderAll();
+  updateCartBar();
+  if (window.WebApp?.HapticFeedback) window.WebApp.HapticFeedback.impactOccurred('light');
 }
 
 function changeQty(id, delta) {
   cart[id] = (cart[id] || 0) + delta;
   if (cart[id] <= 0) delete cart[id];
-  renderProducts();
-  updateCartUI();
+  renderAll();
+  updateCartBar();
 }
 
-function updateCartUI() {
-  const count = Object.values(cart).reduce((a, b) => a + b, 0);
-  const badge = document.getElementById('header-cart-count');
-  const fab = document.getElementById('cart-fab');
-  const fabBadge = document.getElementById('fab-count');
+function updateCartBar() {
+  const items = Object.entries(cart).filter(([,q]) => q > 0);
+  const count = items.reduce((s,[,q]) => s+q, 0);
+  const total = items.reduce((s,[id,q]) => {
+    const p = PRODUCTS.find(x => x.id == id);
+    return s + (p?.price || 0) * q;
+  }, 0);
+  
+  const bar = document.getElementById('cart-bar');
+  const badge = document.getElementById('cart-bar-count');
+  const price = document.getElementById('cart-bar-price');
   
   if (count > 0) {
-    badge.style.display = 'flex';
+    bar.classList.add('visible');
     badge.textContent = count;
-    fab.style.display = 'flex';
-    fabBadge.textContent = count;
+    price.textContent = total + ' ₽';
   } else {
-    badge.style.display = 'none';
-    fab.style.display = 'none';
+    bar.classList.remove('visible');
   }
 }
 
-function filterCategory(cat, el) {
-  currentCategory = cat;
-  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  renderProducts();
-}
-
-function filterProducts() {
-  renderProducts();
-}
-
-// ===== КОРЗИНА =====
-function renderCart() {
-  const container = document.getElementById('cart-content');
+function openCart() {
   const items = Object.entries(cart).map(([id, qty]) => {
     const p = PRODUCTS.find(x => x.id == id);
     return { ...p, qty };
   }).filter(x => x.qty > 0);
   
+  const container = document.getElementById('cart-items');
+  
   if (items.length === 0) {
+    container.innerHTML = `<div class="cart-empty"><div class="cart-empty-icon">🛒</div><p>Корзина пуста</p></div>`;
+  } else {
+    const total = items.reduce((s, x) => s + x.price * x.qty, 0);
     container.innerHTML = `
-      <div class="empty-cart">
-        <div class="icon">🛒</div>
-        <p>Корзина пуста</p>
-        <p style="font-size:13px;margin-top:8px;">Добавьте свежих овощей!</p>
-      </div>`;
-    return;
-  }
-  
-  const total = items.reduce((s, x) => s + x.price * x.qty, 0);
-  
-  container.innerHTML = `
-    <div class="cart-items">
       ${items.map(x => `
         <div class="cart-item">
           <div class="cart-item-img">
-            ${x.img 
-              ? `<img src="${x.img}" alt="${x.name}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" onerror="this.style.display='none';this.parentElement.innerHTML='${x.emoji}'">`
-              : x.emoji
-            }
+            <img src="${x.img}" alt="${x.name}" onerror="this.style.display='none';this.parentElement.innerHTML='${x.emoji}';this.parentElement.style.fontSize='32px';this.parentElement.style.display='flex';this.parentElement.style.alignItems='center';this.parentElement.style.justifyContent='center'">
           </div>
           <div class="cart-item-info">
             <div class="cart-item-name">${x.name}</div>
-            <div class="cart-item-price">${x.price} ₽ / ${x.unitName}</div>
+            <div class="cart-item-price">${x.price * x.qty} ₽</div>
           </div>
-          <div class="cart-item-right">
-            <div class="cart-item-total">${x.price * x.qty} ₽</div>
-            <div class="qty-control">
-              <button class="qty-btn" onclick="changeQty(${x.id}, -1)">−</button>
-              <span class="qty-val">${x.qty}</span>
-              <button class="qty-btn" onclick="changeQty(${x.id}, 1)">+</button>
-            </div>
+          <div class="qty-inline">
+            <button class="qty-btn minus" onclick="changeQty(${x.id},-1)">−</button>
+            <span class="qty-num">${x.qty}</span>
+            <button class="qty-btn plus" onclick="changeQty(${x.id},1)">+</button>
           </div>
         </div>
       `).join('')}
-    </div>
-    <div class="cart-summary">
-      <div class="cart-summary-row">
-        <span>Товаров</span>
-        <span>${items.length} шт</span>
+      <div style="padding-top:16px;border-top:2px solid var(--border);margin-top:8px;display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:16px;font-weight:600;">Итого</span>
+        <span style="font-size:20px;font-weight:800;color:var(--accent);">${total} ₽</span>
       </div>
-      <div class="cart-summary-row">
-        <span>Доставка</span>
-        <span style="color:var(--green);">Бесплатно</span>
-      </div>
-      <div class="cart-summary-row total">
-        <span>Итого</span>
-        <span class="amount">${total} ₽</span>
-      </div>
-      <button class="checkout-btn" onclick="showPage('order')">Оформить заказ →</button>
-    </div>
-  `;
+    `;
+  }
+  
+  document.getElementById('cart-overlay').classList.add('active');
 }
 
-// ===== ОФОРМЛЕНИЕ =====
+function closeCart() {
+  document.getElementById('cart-overlay').classList.remove('active');
+}
+
+function openOrder() {
+  closeCart();
+  document.getElementById('order-overlay').classList.add('active');
+  document.getElementById('order-sheet').classList.add('active');
+}
+
+function closeOrder() {
+  document.getElementById('order-overlay').classList.remove('active');
+  document.getElementById('order-sheet').classList.remove('active');
+}
+
 async function submitOrder(e) {
   e.preventDefault();
   const btn = document.getElementById('submit-btn');
@@ -774,7 +829,7 @@ async function submitOrder(e) {
   
   const items = Object.entries(cart).map(([id, qty]) => {
     const p = PRODUCTS.find(x => x.id == id);
-    return `${p.emoji} ${p.name} — ${qty} × ${p.unitName} = ${qty * p.price} ₽`;
+    return `${p.emoji} ${p.name} — ${qty} × ${p.unit} = ${qty * p.price} ₽`;
   }).join('\n');
   
   const total = Object.entries(cart).reduce((s, [id, qty]) => {
@@ -801,16 +856,15 @@ async function submitOrder(e) {
     });
     
     if (response.ok) {
-      document.getElementById('success-text').textContent = 
-        `Ваш заказ на сумму ${total} ₽ принят!\n\nДоставка: ${date}\nАдрес: ${address}\n\nОплата наличными при получении.\nМы свяжемся с вами для подтверждения.`;
-      
-      document.getElementById('success-order').innerHTML = `
-        <h3>Детали заказа</h3>
+      document.getElementById('success-sub').textContent = 
+        `Заказ на ${total} ₽ принят!\nДоставка: ${date}\nАдрес: ${address}\n\nОплата наличными при получении.\nМы свяжемся для подтверждения.`;
+      document.getElementById('success-details').innerHTML = `
+        <h4>Состав заказа</h4>
         <p>${items.replace(/\n/g, '<br>')}</p>
-        <p style="margin-top:8px;font-weight:600;color:var(--green);">Итого: ${total} ₽</p>
+        <p style="margin-top:8px;font-weight:700;color:var(--accent);">Итого: ${total} ₽</p>
       `;
-      
-      showPage('success');
+      closeOrder();
+      document.getElementById('success-overlay').classList.add('active');
     } else {
       alert('Ошибка отправки. Попробуйте позже.');
       btn.disabled = false;
@@ -823,41 +877,15 @@ async function submitOrder(e) {
   }
 }
 
-function resetAndGoHome() {
+function closeSuccess() {
+  document.getElementById('success-overlay').classList.remove('active');
   cart = {};
-  updateCartUI();
+  updateCartBar();
+  renderAll();
   document.getElementById('order-form').reset();
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   document.getElementById('f-date').value = tomorrow.toISOString().split('T')[0];
-  showPage('catalog');
-}
-
-// ===== НАВИГАЦИЯ =====
-function showPage(name) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
-  window.scrollTo(0, 0);
-  
-  if (name === 'cart') renderCart();
-  if (name === 'catalog') renderProducts();
-  
-  if (window.WebApp?.BackButton) {
-    if (name === 'catalog') {
-      window.WebApp.BackButton.hide();
-    } else {
-      window.WebApp.BackButton.show();
-    }
-  }
-}
-
-if (window.WebApp?.BackButton) {
-  window.WebApp.BackButton.onClick(() => {
-    const activePage = document.querySelector('.page.active').id;
-    if (activePage === 'page-cart') showPage('catalog');
-    else if (activePage === 'page-order') showPage('cart');
-    else if (activePage === 'page-success') resetAndGoHome();
-  });
 }
 
 init();
