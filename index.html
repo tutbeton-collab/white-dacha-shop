@@ -17,6 +17,9 @@
     .hero-stat{text-align:center}
     .hero-stat-val{color:#fff;font-size:20px;font-weight:800}
     .hero-stat-label{color:rgba(255,255,255,.7);font-size:11px;margin-top:2px}
+    .search-bar{background:rgba(255,255,255,.15);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin-top:16px}
+    .search-bar input{background:none;border:none;color:#fff;font-size:14px;width:100%;outline:none}
+    .search-bar input::placeholder{color:rgba(255,255,255,.6)}
     .category-section{padding:24px 0 0}
     .category-header{display:flex;align-items:center;justify-content:space-between;padding:0 20px;margin-bottom:16px}
     .category-title{font-size:20px;font-weight:700}
@@ -96,10 +99,11 @@
     <h1>Белая дача</h1>
     <p>Собрано сегодня на грядке.<br>Доставим за 2 часа.</p>
     <div class="hero-stats">
-      <div class="hero-stat"><div class="hero-stat-val">9+</div><div class="hero-stat-label">овощей</div></div>
+      <div class="hero-stat"><div class="hero-stat-val">10+</div><div class="hero-stat-label">овощей</div></div>
       <div class="hero-stat"><div class="hero-stat-val">2ч</div><div class="hero-stat-label">доставка</div></div>
       <div class="hero-stat"><div class="hero-stat-val">₽₽</div><div class="hero-stat-label">цены</div></div>
     </div>
+    <div class="search-bar"><span>🔍</span><input type="text" placeholder="Найти овощи..." id="search-input" oninput="filterProducts()"></div>
   </div>
   <div class="category-section">
     <div class="category-header"><div class="category-title">🔥 Популярное</div></div>
@@ -150,13 +154,13 @@
 </div>
 
 <script>
-// Real farm photos
+// Real farm photos from GitHub
 const PHOTOS = {
-  tomato: 'https://raw.githubusercontent.com/tutbeton-collab/white-dacha-shop/master/tomato.jpg',     // №25
-  cucumber: 'https://raw.githubusercontent.com/tutbeton-collab/white-dacha-shop/master/cucumber.jpg', // №11
-  pepper: 'https://raw.githubusercontent.com/tutbeton-collab/white-dacha-shop/master/pepper.jpg',     // №8
-  eggplant: 'https://raw.githubusercontent.com/tutbeton-collab/white-dacha-shop/master/eggplant.jpg', // №9
-  potato: 'https://raw.githubusercontent.com/tutbeton-collab/white-dacha-shop/master/potato.webp',     // existing
+  tomato: 'https://raw.githubusercontent.com/tutbeton-collab/white-dacha-shop/master/tomato.jpg',
+  cucumber: 'https://raw.githubusercontent.com/tutbeton-collab/white-dacha-shop/master/cucumber.jpg',
+  pepper: 'https://raw.githubusercontent.com/tutbeton-collab/white-dacha-shop/master/pepper.jpg',
+  eggplant: 'https://raw.githubusercontent.com/tutbeton-collab/white-dacha-shop/master/eggplant.jpg',
+  potato: 'https://raw.githubusercontent.com/tutbeton-collab/white-dacha-shop/master/potato.webp',
 };
 
 const PRODUCTS = [
@@ -175,22 +179,40 @@ const PRODUCTS = [
 ];
 
 let cart = {};
+let searchQuery = '';
 
 function init() {
-  if (window.WebApp) window.WebApp.ready();
+  if (window.WebApp) { window.WebApp.ready(); window.WebApp.enableClosingConfirmation(); }
   const t=new Date(); t.setDate(t.getDate()+1);
   const di=document.getElementById('f-date');
   di.min=t.toISOString().split('T')[0]; di.value=di.min;
   renderAll();
 }
 
+function filterProducts() {
+  searchQuery = document.getElementById('search-input').value.toLowerCase();
+  renderAll();
+}
+
 function renderAll() {
-  renderScroll('scroll-popular', PRODUCTS.filter(p=>p.cat==='popular'), true);
-  renderScroll('scroll-vegetables', PRODUCTS.filter(p=>p.cat==='vegetables'), false);
-  renderScroll('scroll-greens', PRODUCTS.filter(p=>p.cat==='greens'), false);
+  let popular = PRODUCTS.filter(p=>p.cat==='popular');
+  let vegetables = PRODUCTS.filter(p=>p.cat==='vegetables');
+  let greens = PRODUCTS.filter(p=>p.cat==='greens');
+  if (searchQuery) {
+    popular = popular.filter(p=>p.name.toLowerCase().includes(searchQuery));
+    vegetables = vegetables.filter(p=>p.name.toLowerCase().includes(searchQuery));
+    greens = greens.filter(p=>p.name.toLowerCase().includes(searchQuery));
+  }
+  renderScroll('scroll-popular', popular, true);
+  renderScroll('scroll-vegetables', vegetables, false);
+  renderScroll('scroll-greens', greens, false);
 }
 
 function renderScroll(id, items, wide) {
+  if (items.length === 0) {
+    document.getElementById(id).innerHTML = '<div style="padding:20px;color:var(--text-sec);font-size:13px">Ничего не найдено</div>';
+    return;
+  }
   document.getElementById(id).innerHTML = items.map(p => {
     const qty = cart[p.id] || 0;
     const img = p.img
@@ -269,6 +291,8 @@ async function submitOrder(e) {
 }
 
 function closeSuccess(){document.getElementById('success-overlay').classList.remove('active');cart={};updateCartBar();renderAll();document.getElementById('order-form').reset();const t=new Date();t.setDate(t.getDate()+1);document.getElementById('f-date').value=t.toISOString().split('T')[0];}
+
+if(window.WebApp?.BackButton){window.WebApp.BackButton.onClick(()=>{closeCart();closeOrder();});}
 
 init();
 </script>
