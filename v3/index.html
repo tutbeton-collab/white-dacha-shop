@@ -249,21 +249,22 @@ function closeOrder(){document.getElementById('order-overlay').classList.remove(
 async function submitOrder(e) {
   e.preventDefault();
   const btn=document.getElementById('submit-btn');btn.disabled=true;btn.textContent='Отправка...';
-  const items=Object.entries(cart).map(([id,qty])=>{const p=PRODUCTS.find(x=>x.id==id);return`${p.emoji} ${p.name} — ${qty}×${p.unit}=${qty*p.price}₽`;}).join('\n');
-  const total=Object.entries(cart).reduce((s,[id,qty])=>{const p=PRODUCTS.find(x=>x.id==id);return s+p.price*qty;},0);
+  const items=Object.entries(cart).map(([id,qty])=>{const p=PRODUCTS.find(x=>x.id==id);return{...p,qty};});
+  const total=items.reduce((s,x)=>s+x.price*x.qty,0);
   const name=document.getElementById('f-name').value;
   const phone=document.getElementById('f-phone').value;
   const address=document.getElementById('f-address').value;
   const date=document.getElementById('f-date').value;
   const comment=document.getElementById('f-comment').value;
-  const text=`🛒 НОВЫЙ ЗАКАЗ — Белая дача\n\n${items}\n\n💰 Итого: ${total}₽\n\n👤 ${name}\n📱 ${phone}\n📍 ${address}\n📅 ${date}\n💬 ${comment||'—'}`;
+  const itemsText=items.map(x=>`${x.emoji} ${x.name} — ${x.qty}×${x.unit}=${x.qty*x.price}₽`).join('\n');
   try {
-    const r=await fetch('https://platform-api.max.ru/messages?chat_id=72239874',{method:'POST',headers:{'Authorization':'f9LHodD0cOKFL-oH0VPTMHXpJNS6Sw5p6-6njHawNW5WNWZYwLa80iKMfegqFXgB1wINPS85bnC4lZSITS8-','Content-Type':'application/json'},body:JSON.stringify({text,notify:true})});
-    if(r.ok){
-      document.getElementById('success-sub').textContent=`Заказ на ${total}₽ принят!\nДоставка: ${date}\nАдрес: ${address}\n\nОплата наличными. Мы свяжемся для подтверждения.`;
-      document.getElementById('success-details').innerHTML=`<h4>Состав заказа</h4><p>${items.replace(/\n/g,'<br>')}</p><p style="margin-top:8px;font-weight:700;color:var(--accent)">Итого: ${total}₽</p>`;
+    const r=await fetch('http://95.71.133.181:8090/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,phone,address,delivery_date:date,comment,items})});
+    const data=await r.json();
+    if(r.ok && data.success){
+      document.getElementById('success-sub').textContent=`Заказ ${data.order_uid} на ${total}₽ принят!\nДоставка: ${date}\nАдрес: ${address}\n\nОплата наличными. Мы свяжемся для подтверждения.`;
+      document.getElementById('success-details').innerHTML=`<h4>Состав заказа</h4><p>${itemsText.replace(/\n/g,'<br>')}</p><p style="margin-top:8px;font-weight:700;color:var(--accent)">Итого: ${total}₽</p><p style="margin-top:4px;font-size:12px;color:var(--text-sec)">Номер заказа: ${data.order_uid}</p>`;
       closeOrder();document.getElementById('success-overlay').classList.add('active');
-    } else {alert('Ошибка отправки');btn.disabled=false;btn.textContent='Подтвердить заказ';}
+    } else {alert('Ошибка: '+(data.error||'отправки'));btn.disabled=false;btn.textContent='Подтвердить заказ';}
   } catch(err) {alert('Ошибка сети');btn.disabled=false;btn.textContent='Подтвердить заказ';}
 }
 
