@@ -224,9 +224,10 @@ async function submitOrder(e) {
   e.preventDefault();
   const btn = document.getElementById('submit-btn');
   btn.disabled = true; btn.textContent = 'Отправка...';
-  const items = Object.entries(cart).map(([id,qty])=>{const p=PRODUCTS.find(x=>x.id==id);return`${p.emoji} ${p.name} — ${qty}×${p.unitName}=${qty*p.price}₽`;}).join('\n');
-  const total = Object.entries(cart).reduce((s,[id,qty])=>{const p=PRODUCTS.find(x=>x.id==id);return s+p.price*qty;},0);
-  const text = `🛒 НОВЫЙ ЗАКАЗ — Белая дача\n\n${items}\n\n💰 Итого: ${total}₽\n\n👤 ${document.getElementById('f-name').value}\n📱 ${document.getElementById('f-phone').value}\n📍 ${document.getElementById('f-address').value}\n📅 ${document.getElementById('f-date').value}\n💬 ${document.getElementById('f-comment').value||'—'}`;
+  const items = Object.entries(cart).map(([id,qty])=>{const p=PRODUCTS.find(x=>x.id==id);return{...p,qty};});
+  const total = items.reduce((s,x)=>s+x.price*x.qty,0);
+  const itemsText = items.map(x=>`${x.emoji} ${x.name} — ${x.qty}×${x.unitName}=${x.qty*x.price}₽`).join('\n');
+  const text = `🛒 НОВЫЙ ЗАКАЗ — Белая дача\n\n${itemsText}\n\n💰 Итого: ${total}₽\n\n👤 ${document.getElementById('f-name').value}\n📱 ${document.getElementById('f-phone').value}\n📍 ${document.getElementById('f-address').value}\n📅 ${document.getElementById('f-date').value}\n💬 ${document.getElementById('f-comment').value||'—'}`;
   try {
     const r = await fetch('https://platform-api.max.ru/messages?chat_id=72239874',{method:'POST',headers:{'Authorization':'f9LHodD0cOKFL-oH0VPTMHXpJNS6Sw5p6-6njHawNW5WNWZYwLa80iKMfegqFXgB1wINPS85bnC4lZSITS8-','Content-Type':'application/json'},body:JSON.stringify({text,notify:true})});
     if(r.ok){document.getElementById('success-text').textContent=`Заказ на ${total}₽ принят!\nДоставка: ${document.getElementById('f-date').value}\nАдрес: ${document.getElementById('f-address').value}\n\nОплата наличными. Мы свяжемся для подтверждения.`;showPage('success');}
