@@ -97,7 +97,7 @@ function submitOrder() {
   };
   
   // Send to bot server
-  fetch('https://tutbeton-collab.github.io/white-dacha-shop/api/orders', {
+  fetch('http://31.76.225.127:8091/api/orders', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(order)
