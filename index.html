@@ -1,349 +1,251 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Белая дача — Заказ овощей</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #333; }
-
-    .header { background: #4CAF50; color: white; padding: 16px; text-align: center; position: sticky; top: 0; z-index: 100; }
-    .header h1 { font-size: 20px; font-weight: 600; }
-    .header .subtitle { font-size: 13px; opacity: 0.9; margin-top: 4px; }
-
-    .container { padding: 16px; padding-bottom: 100px; max-width: 600px; margin: 0 auto; }
-
-    .catalog-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-    .product-img { width: 100%; height: 120px; background: #e8f5e9; display: flex; align-items: center; justify-content: center; font-size: 48px; }
-    .product-info { padding: 12px; }
-    .product-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-    .product-price { font-size: 13px; color: #666; margin-bottom: 8px; }
-    .product-pricedetail { font-size: 11px; color: #999; margin-bottom: 8px; }
-    .add-btn { width: 100%; padding: 8px; background: #4CAF50; color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
-    .add-btn:active { background: #388E3C; }
-
-    .cart-fab { position: fixed; bottom: 20px; right: 20px; background: #FF5722; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; font-size: 24px; cursor: pointer; box-shadow: 0 4px 12px rgba(255,87,34,0.4); z-index: 200; display: flex; align-items: center; justify-content: center; }
-    .cart-count { position: absolute; top: -4px; right: -4px; background: #F44336; color: white; border-radius: 50%; width: 22px; height: 22px; font-size: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
-
-    .page { display: none; }
-    .page.active { display: block; }
-
-    .cart-page { background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
-    .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #eee; }
-    .cart-item:last-child { border-bottom: none; }
-    .cart-item-name { font-size: 14px; font-weight: 500; }
-    .cart-item-qty { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
-    .qty-btn { width: 28px; height: 28px; border-radius: 50%; border: 1px solid #ddd; background: white; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-    .qty-val { font-size: 14px; font-weight: 600; min-width: 24px; text-align: center; }
-    .cart-item-price { font-size: 14px; font-weight: 600; color: #4CAF50; }
-    .cart-total { text-align: right; font-size: 18px; font-weight: 700; padding: 16px 0; }
-
-    .form-group { margin-bottom: 16px; }
-    .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #555; }
-    .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
-    .form-group textarea { resize: vertical; min-height: 80px; }
-
-    .submit-btn { width: 100%; padding: 16px; background: #4CAF50; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 16px; }
-    .submit-btn:active { background: #388E3C; }
-    .submit-btn:disabled { background: #ccc; }
-
-    .success-page { text-align: center; padding: 40px 20px; }
-    .success-icon { font-size: 64px; margin-bottom: 16px; }
-    .success-title { font-size: 22px; font-weight: 700; color: #4CAF50; margin-bottom: 8px; }
-    .success-text { font-size: 14px; color: #666; line-height: 1.5; }
-
-    .nav-back { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: white; border-bottom: 1px solid #eee; cursor: pointer; font-size: 14px; font-weight: 500; }
-    .nav-back:hover { background: #f5f5f5; }
-
-    .section-title { font-size: 16px; font-weight: 700; margin: 16px 0 12px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>� Белая Дача — Каталог</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: #F5F0E8;
+  color: #2E2E2E;
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+.header {
+  background: linear-gradient(135deg, #2E7D32, #4CAF50);
+  color: white;
+  padding: 20px 16px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.header h1 { font-size: 22px; font-weight: 700; }
+.header p { font-size: 14px; opacity: 0.9; margin-top: 4px; }
+.product-list { padding: 12px; }
+.product-item {
+  background: white;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+.product-item:active { transform: scale(0.98); }
+.product-img {
+  width: 72px; height: 72px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: #E8F5E9;
+}
+.product-info { flex: 1; }
+.product-name { font-size: 16px; font-weight: 600; }
+.product-price { font-size: 14px; color: #666; margin-top: 2px; }
+.qty-controls { display: flex; align-items: center; gap: 8px; }
+.qty-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.qty-btn.plus { background: #4CAF50; color: white; }
+.qty-btn.minus { background: #E0E0E0; color: #666; }
+.qty-btn.minus:disabled { opacity: 0.3; cursor: default; }
+.qty-num {
+  font-size: 18px;
+  font-weight: 600;
+  min-width: 28px;
+  text-align: center;
+}
+.cart-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: #FF6F00;
+  color: white;
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 -2px 10px rgba(0,0.2);
+  z-index: 100;
+}
+.cart-bar .cart-text { font-size: 16px; font-weight: 600; }
+.cart-bar .cart-btn {
+  background: white;
+  color: #FF6F00;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.cart-bar .cart-btn:disabled { opacity: 0.5; cursor: default; }
+/* Photo modal */
+.modal-overlay {
+  display: none;
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 200;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.modal-overlay.active { display: flex; }
+.modal-img {
+  max-width: 90vw;
+  max-height: 70vh;
+  border-radius: 16px;
+}
+.modal-name {
+  color: white;
+  font-size: 20px;
+  margin-top: 16px;
+  font-weight: 600;
+}
+.modal-price {
+  color: #BBDEFB;
+  font-size: 16px;
+  margin-top: 4px;
+}
+.modal-add {
+  margin-top: 20px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 14px 36px;
+  border-radius: 28px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.modal-close {
+  position: absolute;
+  top: 16px; right: 20px;
+  color: white: 32px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+</style>
 </head>
 <body>
 
-<!-- MAX Bridge -->
-<script src="https://st.max.ru/js/max-web-app.js"></script>
+<div class="header">
+  <h1>🌿 Белая Дача</h1>
+  <p>Свежие овощи с фермы</p>
+</div>
 
-<div id="app">
-  <!-- Каталог -->
-  <div id="page-catalog" class="page active">
-    <div class="header">
-      <h1>🌿 Белая дача</h1>
-      <div class="subtitle">Свежие овощи с доставкой</div>
-    </div>
-    <div class="container">
-      <div class="section-title">Каталог</div>
-      <div id="catalog" class="catalog-grid"></div>
-    </div>
-    <button class="cart-fab" id="cart-fab" onclick="showPage('cart')">
-      🛒
-      <span class="cart-count" id="cart-count">0</span>
-    </button>
-  </div>
+<div class="product-list" id="productList"></div>
 
-  <!-- Корзина -->
-  <div id="page-cart" class="page">
-    <div class="nav-back" onclick="showPage('catalog')">← Назад к каталогу</div>
-    <div class="container">
-      <div class="section-title">Корзина</div>
-      <div id="cart-items"></div>
-      <div id="cart-total" class="cart-total"></div>
-      <button class="submit-btn" id="checkout-btn" onclick="showPage('order')">Оформить заказ</button>
-    </div>
-  </div>
+<div class="cart-bar" id="cartBar">
+  <span class="cart-text" id="cartSummary">0 ₽</span>
+  <button class="cart-btn" id="cartBtn" disabled onclick="goToCart()">� Корзина</button>
+</div>
 
-  <!-- Оформление -->
-  <div id="page-order" class="page">
-    <div class="nav-back" onclick="showPage('cart')">← Назад в корзину</div>
-    <div class="container">
-      <div class="section-title">Оформление заказа</div>
-      <form id="order-form" onsubmit="submitOrder(event)">
-        <div class="form-group">
-          <label>Ваше имя *</label>
-          <input type="text" id="f-name" required placeholder="Иван Иванов">
-        </div>
-        <div class="form-group">
-          <label>Телефон *</label>
-          <input type="tel" id="f-phone" required placeholder="+7 (999) 999-99-99">
-        </div>
-        <div class="form-group">
-          <label>Адрес доставки *</label>
-          <textarea id="f-address" required placeholder="Город, улица, дом, квартира, подъезд, код домофона"></textarea>
-        </div>
-        <div class="form-group">
-          <label>Дата доставки *</label>
-          <input type="date" id="f-date" required>
-        </div>
-        <div class="form-group">
-          <label>Пожелания</label>
-          <textarea id="f-comment" placeholder="Удобное время, примечания к заказу..."></textarea>
-        </div>
-        <button type="submit" class="submit-btn" id="submit-btn">Подтвердить заказ</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Успех -->
-  <div id="page-success" class="page">
-    <div class="container">
-      <div class="success-page">
-        <div class="success-icon">✅</div>
-        <div class="success-title">Заказ принят!</div>
-        <div class="success-text" id="success-text"></div>
-        <button class="submit-btn" style="margin-top: 24px;" onclick="resetAndGoHome()">Заказать ещё</button>
-      </div>
-    </div>
-  </div>
+<!-- Photo modal -->
+<div class="modal-overlay" id="photoModal" onclick="closeModal(event)">
+  <button class="modal-close" onclick="closePhotoModal()">&times;</button>
+  <img class="modal-img" id="modalImg" src="" alt="">
+  <div class="modal-name" id="modalName"></div>
+  <div class="modal-price" id="modalPrice"></div>
+  <button class="modal-add" id="modalAddBtn" onclick="modalAdd()">+ Добавить</button>
 </div>
 
 <script>
-// ===== КАТАЛОГ =====
-const PRODUCTS = [
-  { id: 1, name: 'Помидоры', emoji: '🍅', price: 500, unit: 1, unitName: 'ведро', note: 'Спелые, с грядки' },
-  { id: 2, name: 'Огурцы', emoji: '🥒', price: 500, unit: 1, unitName: 'ведро', note: 'Хрустящие, свежие' },
-  { id: 3, name: 'Перец болгарский', emoji: '🫑', price: 250, unit: 1, unitName: 'ведро', note: 'Сочный, сладкий' },
-  { id: 4, name: 'Перец острый', emoji: '🌶️', price: 100, unit: 12, unitName: '12 штук', note: 'Острый, ароматный' },
-  { id: 5, name: 'Баклажаны', emoji: '🍆', price: 300, unit: 1, unitName: 'ведро', note: 'Отборные' },
-  { id: 6, name: 'Картошка', emoji: '🥔', price: 200, unit: 1, unitName: 'ведро', note: 'Молодой картофель' },
-  { id: 7, name: 'Кукуруза', emoji: '🌽', price: 100, unit: 3, unitName: '3 штуки', note: 'Сладкая, молодая' },
-  { id: 8, name: 'Кабачок', emoji: '🥒', price: 100, unit: 3, unitName: '3 штуки', note: 'Небольшие, нежные' },
-  { id: 9, name: 'Арбуз', emoji: '🍉', price: 100, unit: 1, unitName: 'штука', note: 'Спелый, сладкий' },
+const CATALOG = [
+  { id: 0, name: 'Томаты', price: 500, unit: 'ведро', emoji: '�' },
+  { id: 1, name: 'Перец', price: 200, unit: 'ведро', emoji: '�' },
+  { id: 2, name: 'Огурец', price: 500, unit: 'ведро', emoji: '🥒' },
+  { id: 3, name: 'Арбуз', price: 200, unit: 'шт',    emoji: '�' },
+  { id: 4, name: 'Горький перец', price: 100, unit: '12 шт', emoji: '🌶️' },
+  { id: 5, name: 'Баклажан', price: 300, unit: 'ведро', emoji: '🍆' },
+  { id: 6, name: 'Тыква',  price: 35,  unit: 'кг',    emoji: '🎃' },
 ];
 
-let cart = {};
+const IMG_URLtutbeton-collab.github.io/white-dacha-shop/images/';
 
-function init() {
-  // MAX Bridge init
-  if (window.WebApp) {
-    window.WebApp.ready();
-    window.WebApp.enableClosingConfirmation();
-  }
-
-  // Min date = tomorrow
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  const dateInput = document.getElementById('f-date');
-  dateInput.min = tomorrow.toISOString().split('T')[0];
-  dateInput.value = dateInput.min;
-
-  renderCatalog();
-}
+let cart = JSON.parse(localStorage.getItem('bd_cart') || '{}');
+let currentModalId = null;
 
 function renderCatalog() {
-  const el = document.getElementById('catalog');
-  el.innerHTML = PRODUCTS.map(p => `
-    <div class="product-card">
-      <div class="product-img">${p.emoji}</div>
-      <div class="product-info">
-        <div class="product-name">${p.name}</div>
-        <div class="product-price">${p.price} ₽ за ${p.unitName}</div>
-        ${cart[p.id] ? `<div class="product-pricedetail">В корзине: ${cart[p.id]} × ${p.price} ₽ = ${cart[p.id] * p.price} ₽</div>` : ''}
-        <button class="add-btn" onclick="addToCart(${p.id})">${cart[p.id] ? '+' : 'В корзину'}</button>
+  const list = document.getElementById('productList');
+  list.innerHTML = '';
+  CATALOG.forEach(p => {
+    const qty = cart[p.id] || 0;
+    const div = document.createElement('divdiv.className = 'product-item';
+    div.innerHTML = `
+      <img class="product-img" src="${IMG_URL}product_${p.id}.png" alt="${p.emoji}">
+      <div class="product-info" onclick="showPhoto(${p.id})">
+        <div class="product-name">${p.emoji} ${p.name}</div>
+        <div class="product-price">${p.price} ₽ / ${p.unit}</div>
       </div>
-    </div>
-  `).join('');
-}
-
-function addToCart(id) {
-  cart[id] = (cart[id] || 0) + 1;
-  renderCatalog();
-  updateCartUI();
-
-  // Haptic feedback
-  if (window.WebApp?.HapticFeedback) {
-    window.WebApp.HapticFeedback.impactOccurred('light');
-  }
-}
-
-function updateCartUI() {
-  const count = Object.values(cart).reduce((a, b) => a + b, 0);
-  document.getElementById('cart-count').textContent = count;
-  document.getElementById('cart-count').style.display = count > 0 ? 'flex' : 'none';
-}
-
-function showPage(name) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
-
-  if (name === 'cart') renderCart();
-  if (name === 'catalog') renderCatalog();
-
-  // Back button
-  if (window.WebApp?.BackButton) {
-    if (name === 'catalog') {
-      window.WebApp.BackButton.hide();
-    } else {
-      window.WebApp.BackButton.show();
-    }
-  }
-}
-
-function renderCart() {
-  const items = Object.entries(cart).map(([id, qty]) => {
-    const p = PRODUCTS.find(x => x.id == id);
-    return { ...p, qty };
-  }).filter(x => x.qty > 0);
-
-  const total = items.reduce((s, x) => s + x.price * x.qty, 0);
-
-  const el = document.getElementById('cart-items');
-  if (items.length === 0) {
-    el.innerHTML = '<p style="text-align:center;color:#999;padding:32px;">Корзина пуста</p>';
-    document.getElementById('cart-total').textContent = '';
-    document.getElementById('checkout-btn').style.display = 'none';
-    return;
-  }
-
-  document.getElementById('checkout-btn').style.display = 'block';
-
-  el.innerHTML = items.map(x => `
-    <div class="cart-item">
-      <div>
-        <div class="cart-item-name">${x.emoji} ${x.name}</div>
-        <div class="cart-item-qty">
-          <button class="qty-btn" onclick="changeQty(${x.id}, -1)">−</button>
-          <span class="qty-val">${x.qty}</span>
-          <button class="qty-btn" onclick="changeQty(${x.id}, 1)">+</button>
-          <span style="color:#999;font-size:12px;">× ${x.price} ₽</span>
-        </div>
+      <div class="qty-controls">
+        <button class="qty-btn minus" ${qty<=0?'disabled':''} onclick="changeQty(${p.id},-1)">−</button>
+        <span class="qty-num" id="qty${p.id}">${qty}</span>
+        <button class="qty-btn plus" onclick="changeQty(${p.id},1)">+</button>
       </div>
-      <div class="cart-item-price">${x.price * x.qty} ₽</div>
-    </div>
-  `).join('');
-
-  document.getElementById('cart-total').textContent = `Итого: ${total} ₽`;
+    `;
+    list.appendChild(div);
+  });
+  updateCart();
 }
 
 function changeQty(id, delta) {
   cart[id] = (cart[id] || 0) + delta;
   if (cart[id] <= 0) delete cart[id];
-  renderCart();
+  localStorage.setItem('bd_cart', JSON.stringify(cart));
   renderCatalog();
-  updateCartUI();
 }
 
-async function submitOrder(e) {
-  e.preventDefault();
-  const btn = document.getElementById('submit-btn');
-  btn.disabled = true;
-  btn.textContent = 'Отправка...';
-
-  const items = Object.entries(cart).map(([id, qty]) => {
-    const p = PRODUCTS.find(x => x.id == id);
-    return `${p.emoji} ${p.name} — ${qty} × ${p.unitName} = ${qty * p.price} ₽`;
-  }).join('\n');
-
-  const total = Object.entries(cart).reduce((s, [id, qty]) => {
-    const p = PRODUCTS.find(x => x.id == id);
-    return s + p.price * qty;
-  }, 0);
-
-  const text = `🛒 НОВЫЙ ЗАКАЗ — Белая дача
-
-${items}
-
-💰 Итого: ${total} ₽
-
-👤 ${document.getElementById('f-name').value}
-📱 ${document.getElementById('f-phone').value}
-📍 ${document.getElementById('f-address').value}
-📅 ${document.getElementById('f-date').value}
-💬 ${document.getElementById('f-comment').value || '—'}`;
-
-  // Send via MAX Bot API
-  try {
-    const response = await fetch('https://platform-api.max.ru/messages?chat_id=72239874', {
-      method: 'POST',
-      headers: {
-        'Authorization': 'f9LHodD0cOKFL-oH0VPTMHXpJNS6Sw5p6-6njHawNW5WNWZYwLa80iKMfegqFXgB1wINPS85bnC4lZSITS8-',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ text, notify: true })
-    });
-
-    if (response.ok) {
-      document.getElementById('success-text').textContent =
-        `Ваш заказ на сумму ${total} ₽ принят!\n\nДоставка: ${document.getElementById('f-date').value}\nАдрес: ${document.getElementById('f-address').value}\n\nОплата наличными при получении.\nМы свяжемся с вами для подтверждения.`;
-      showPage('success');
-    } else {
-      alert('Ошибка отправки. Попробуйте позже.');
-      btn.disabled = false;
-      btn.textContent = 'Подтвердить заказ';
-    }
-  } catch (err) {
-    alert('Ошибка сети. Проверьте подключение.');
-    btn.disabled = false;
-    btn.textContent = 'Подтвердить заказ';
-  }
-}
-
-function resetAndGoHome() {
-  cart = {};
-  updateCartUI();
-  document.getElementById('order-form').reset();
-
-  // Reset min date
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  const dateInput = document.getElementById('f-date');
-  dateInput.value = tomorrow.toISOString().split('T')[0];
-
-  showPage('catalog');
-}
-
-// MAX Bridge back button
-if (window.WebApp?.BackButton) {
-  window.WebApp.BackButton.onClick(() => {
-    const activePage = document.querySelector('.page.active').id;
-    if (activePage === 'page-cart') showPage('catalog');
-    else if (activePage === 'page-order') showPage('cart');
-    else if (activePage === 'page-success') resetAndGoHome();
+function updateCart() {
+  let count = 0, total = 0;
+  CATALOG.forEach(p => {
+    const q = cart[p.id] || 0;
+    count += q;
+    total += q * p.price;
   });
+  document.getElementById('cartSummary').textContent = count === 0 ? '0 �' : `${count} товаров · ${total} ₽`;
+  document.getElementById('cartBtn').disabled = count === ...(cartBtn').disabled = count === 0;
 }
 
-init();
-</script>
+function goToCart() {
+  localStorage.setItem('bd_cart', JSON.stringify(cart));
+  window.location.href = 'cart.html';
+}
 
+function showPhoto(id) {
+  currentModalId = id;
+  const p = CATALOG.find(x => x.id === id);
+  document.getElementById('modalImg').src = IMG_URL + 'product_' + id + '.png';
+  document.getElementById('modalName').textContent = p.emoji + ' ' + p.name;
+  document.getElementById('modalPrice').textContent = p.price + ' � / ' + p.unit;
+  document.getElementById('photoModal').classList.add('active');
+  document.getElementById('modalAddBtn').textContent = '+ Добавить';
+}
+
+function modalAdd() {
+  changeQty(currentModalId, 1);
+  setTimeout(() => closePhotoModal(), 400);
+  document.getElementById('modalAddBtn').textContent = '✓ Добавлено!';
+}
+
+function closePhotoModal() {
+  document.getElementById('photoModal').classList.remove('active');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('photoModal')) closePhotoModal();
+}
+
+renderCatalog();
+</script>
 </body>
 </html>
