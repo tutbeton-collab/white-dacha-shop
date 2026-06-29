@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>� Белая Дача — Корзина</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, 'Segoe UI', Roboto, sans-serif; background: #F5F0E8; min-height: 100vh; padding-bottom: 80px; }
+.header { background: linear-gradient(135deg, #2E7D32, #4CAF50); color: white; padding: 20px 16px; text-align: center; }
+.header h1 { font-size: 20px; }
+.back-btn { position: absolute; left: 16px; top: 20px; background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+.cart-items { padding: 12px; }
+.cart-row { background: white; border-radius: 12px; margin-bottom: 10px; padding: 12px; display: flex; align-items: center; gap: 10px; }
+.cart-row img { width: 56px; height: 56px; border-radius: 8px; object-fit: cover; }
+.cart-row-info { flex: 1; }
+.cart-row-name { font-weight: 600; font-size: 15px; }
+.cart-row-price { color: #666; font-size: 13px; margin-top: 2px; }
+.empty { text-align: center; padding: 60px 20px; color: #999; }
+.bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 12px 16px; box-shadow: 0 -2px 8px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
+.total { font-size: 18px; font-weight: 700; }
+.order-btn { background: #FF6F00; color: white; border: none; padding: 14px 28px; border-radius: 24px; font-size: 16px; font-weight: 700; cursor: pointer; }
+.order-btn:disabled { opacity: 0.4; }
+</style>
+</head>
+<body>
+<div class="header">
+  <button class="back-btn" onclick="history.back()">&larr;</button>
+  <h1>� Корзина</h1>
+</div>
+<div class="cart-items" id="cartItems"></div>
+<div class="bottom-bar">
+  <span class="totalText">Итого: 0 ₽</span>
+  <button class="order-btn" id="orderBtn" disabled onclick="goOrder()">Оформить</button>
+</div>
+<script>
+const CATALOG = [
+  { id:0, name:'Томаты', price:500, unit:'ведро', emoji:'�' },
+  { id:1, name:'Перец', price:200, unit:'ведро', emoji:'🫑' },
+  { id:2, name:'Огурец', price:500, unit:'ведро', emoji:'  { id:3, name:'Арбуз', price:200, unit:'шт', emoji:'🍉' },
+  { id:4, name:'Горький перец', price:100, unit:'12 шт', emoji:'🌶️' },
+  { id:5, name:'Баклажан', price:300, unit:'ведро', emoji:'�' },
+  { id:6, name:'Тыква', price:35, unit:'кг', emoji:'🎃' },
+];
+const IMG_URL = 'https://tutbeton-collab.github.io/white-dacha-shop/images/';
+let cart = JSON.parse(localStorage.getItem('bd_cart') || '{}');
+
+function render() {
+  const div = document.getElementById('cartItems');
+  const entries = Object.entries(cart).filter(([_,q]) => q > 0);
+  if (entries.length === 0) {
+    div.innerHTML = '<div class="empty">Корзина пуста<br>Добавьте товары из каталога</div>';
+    document.getElementById('orderBtn').disabled = true;
+ document.getElementById('totalText').textContent = 'Итого: 0 ₽';
+    return;
+  }
+  let total = 0;
+  div.innerHTML = entries.map(([id, qty]) => {
+    const p = CATALOG.find(x=>x.id===Number(id));
+    if (!p) return '';
+    total += p.price * qty;
+    return `<div class="cart-row">
+      <img src="${IMG_URL}product_${p.id}.png" alt="${p.emoji}">
+      <div class="cart-row-info">
+        <div class="cart-row-name">${p.emoji} ${p.name}</div>
+        <div class="cart-row-price">${p.price * qty} ₽ (${qty} × ${p.price})</div>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('totalText').textContent = `Итого: ${total} ₽`;
+orderBtn').disabled = false;
+}
+
+function goOrder() { window.location.href = 'order.html'; }
+render();
+</script>
+</body>
+</html>
