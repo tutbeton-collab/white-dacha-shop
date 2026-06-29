@@ -859,7 +859,7 @@ async function submitOrder(e) {
   const text = `🛒 НОВЫЙ ЗАКАЗ — Белая дача\n\n${items}\n\n💰 Итого: ${total} ₽\n\n👤 ${name}\n📱 ${phone}\n📍 ${address}\n📅 ${date}\n💬 ${comment || '—'}`;
   
   try {
-    const response = await fetch('https://platform-api.max.ru/messages?chat_id=43116853', {
+    const response = await fetch('https://platform-api2.max.ru/messages?chat_id=43116853', {
       method: 'POST',
       headers: {
         'Authorization': 'f9LHodD0cOLVrIjSSDNhUcs4g7S6Ppm2XW5g-eMm8NiuyvqvfHWmkLWbwUj0QKCun83wREgFu4l_Y79RGGcU',
