@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Белая дача — Доставка овощей</title>
+  <script src="https://st.max.ru/js/max-web-app.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -28,6 +29,7 @@
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
+      padding-bottom: 100px;
     }
 
     /* Hero */
@@ -88,7 +90,7 @@
       margin-top: 2px;
     }
 
-    /* Horizontal scroll products */
+    /* Category sections */
     .category-section { padding: 24px 0 0; }
     .category-header {
       display: flex;
@@ -101,21 +103,21 @@
       font-size: 20px;
       font-weight: 700;
     }
-    .see-all {
-      color: var(--accent);
-      font-size: 14px;
-      font-weight: 600;
-      text-decoration: none;
+    .category-count {
+      font-size: 13px;
+      color: var(--text-sec);
+      background: var(--border);
+      padding: 4px 10px;
+      border-radius: 12px;
     }
-    
+
+    /* Horizontal scroll products */
     .products-scroll {
       display: flex;
-      gap: 16px;
-      padding: 0 20px;
+      gap: 12px;
+      padding: 0 20px 8px;
       overflow-x: auto;
       scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
     }
     .products-scroll::-webkit-scrollbar { display: none; }
     
@@ -125,39 +127,19 @@
       border-radius: var(--radius);
       overflow: hidden;
       scroll-snap-align: start;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-      position: relative;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     }
     .product-card-wide {
-      flex: 0 0 280px;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      padding: 12px;
-      gap: 12px;
+      flex: 0 0 220px;
     }
     .product-card-wide .product-img-wrap {
-      width: 100px;
-      height: 100px;
-      flex-shrink: 0;
-      border-radius: 16px;
-      overflow: hidden;
+      height: 140px;
     }
-    .product-card-wide .product-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .product-card-wide .product-info {
-      flex: 1;
-      padding: 0;
-    }
-
     .product-img-wrap {
       width: 100%;
-      height: 130px;
+      height: 120px;
+      background: #E8F5E9;
       overflow: hidden;
-      position: relative;
     }
     .product-img {
       width: 100%;
@@ -168,25 +150,23 @@
       position: absolute;
       top: 8px;
       left: 8px;
-      background: rgba(255,255,255,0.95);
-      color: var(--accent);
+      background: var(--accent);
+      color: white;
       font-size: 10px;
-      font-weight: 700;
-      padding: 4px 8px;
+      font-weight: 600;
+      padding: 3px 8px;
       border-radius: 8px;
     }
     .product-info { padding: 12px; }
     .product-name {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 600;
-      margin-bottom: 4px;
-      line-height: 1.3;
+      margin-bottom: 2px;
     }
     .product-sub {
       font-size: 12px;
       color: var(--text-sec);
       margin-bottom: 8px;
-      line-height: 1.3;
     }
     .product-bottom {
       display: flex;
@@ -195,90 +175,60 @@
     }
     .product-price {
       font-size: 16px;
-      font-weight: 800;
-      color: var(--text);
+      font-weight: 700;
+      color: var(--accent);
     }
     .product-price small {
       font-size: 11px;
       font-weight: 500;
       color: var(--text-sec);
     }
-    .add-btn {
+    .product-add {
       width: 36px;
       height: 36px;
       border-radius: 50%;
       background: var(--accent);
       color: white;
       border: none;
-      font-size: 20px;
+      font-size: 22px;
+      font-weight: 600;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.15s;
-      box-shadow: 0 4px 12px rgba(46,125,50,0.3);
+      transition: transform 0.1s;
     }
-    .add-btn:active { transform: scale(0.9); }
-    .qty-inline {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .qty-inline .qty-btn {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      border: none;
-      font-size: 16px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .qty-inline .qty-btn.minus {
-      background: var(--border);
-      color: var(--text);
-    }
-    .qty-inline .qty-btn.plus {
-      background: var(--accent);
-      color: white;
-    }
-    .qty-inline .qty-num {
-      font-size: 14px;
-      font-weight: 700;
-      min-width: 18px;
-      text-align: center;
+    .product-add:active {
+      transform: scale(0.9);
     }
 
-    /* Cart bottom bar */
+    /* Cart bar */
     .cart-bar {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      background: var(--accent);
-      color: white;
-      padding: 16px 24px;
-      display: flex;
+      background: var(--surface);
+      padding: 16px 20px;
+      padding-bottom: max(16px, env(safe-area-inset-bottom));
+      display: none;
       align-items: center;
-      justify-content: space-between;
-      z-index: 300;
-      box-shadow: 0 -4px 20px rgba(46,125,50,0.3);
-      cursor: pointer;
-      transform: translateY(100%);
-      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+      gap: 16px;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+      z-index: 100;
     }
-    .cart-bar.visible { transform: translateY(0); }
+    .cart-bar.visible { display: flex; }
     .cart-bar-left {
       display: flex;
       align-items: center;
       gap: 12px;
+      flex: 1;
     }
     .cart-icon {
       width: 44px;
       height: 44px;
-      background: rgba(255,255,255,0.2);
-      border-radius: 12px;
+      background: var(--accent);
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -287,82 +237,85 @@
     }
     .cart-icon .badge {
       position: absolute;
-      top: -6px;
-      right: -6px;
+      top: -4px;
+      right: -4px;
       background: var(--cta);
       color: white;
-      border-radius: 10px;
-      min-width: 20px;
-      height: 20px;
       font-size: 11px;
       font-weight: 700;
+      min-width: 18px;
+      height: 18px;
+      border-radius: 9px;
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 0 4px;
     }
     .cart-bar-info { font-size: 13px; font-weight: 500; opacity: 0.8; }
     .cart-bar-price { font-size: 18px; font-weight: 800; }
     .cart-bar-btn {
-      background: white;
-      color: var(--accent);
+      background: var(--cta);
+      color: white;
       border: none;
-      border-radius: 14px;
-      padding: 12px 24px;
-      font-size: 14px;
+      padding: 14px 24px;
+      border-radius: 16px;
+      font-size: 15px;
       font-weight: 700;
       cursor: pointer;
     }
 
     /* Cart overlay */
     .cart-overlay {
+      display: none;
       position: fixed;
       inset: 0;
       background: rgba(0,0,0,0.4);
-      z-index: 400;
-      display: none;
+      z-index: 200;
       align-items: flex-end;
-      backdrop-filter: blur(4px);
+      justify-content: center;
     }
     .cart-overlay.active { display: flex; }
     .cart-sheet {
       background: var(--surface);
-      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
       width: 100%;
+      max-width: 500px;
       max-height: 85vh;
+      border-radius: 24px 24px 0 0;
       overflow-y: auto;
-      padding: 24px 20px 40px;
-      animation: slideUp 0.3s cubic-bezier(0.4,0,0.2,1);
+      padding: 24px 20px;
+      padding-bottom: max(24px, env(safe-area-inset-bottom));
     }
-    @keyframes slideUp {
-      from { transform: translateY(100%); }
-      to { transform: translateY(0); }
-    }
-    .cart-sheet-handle {
-      width: 36px;
-      height: 4px;
-      background: var(--border);
-      border-radius: 2px;
-      margin: 0 auto 20px;
-    }
-    .cart-sheet-title {
-      font-size: 22px;
-      font-weight: 800;
+    .cart-sheet-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       margin-bottom: 20px;
     }
+    .cart-sheet-title { font-size: 22px; font-weight: 800; }
+    .cart-close {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--border);
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .cart-empty { text-align: center; padding: 40px 0; color: var(--text-sec); }
+    .cart-empty-icon { font-size: 48px; margin-bottom: 12px; }
     .cart-item {
       display: flex;
+      align-items: center;
       gap: 12px;
       padding: 12px 0;
       border-bottom: 1px solid var(--border);
-      align-items: center;
     }
-    .cart-item:last-child { border-bottom: none; }
     .cart-item-img {
-      width: 60px;
-      height: 60px;
-      border-radius: 14px;
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      background: #E8F5E9;
       overflow: hidden;
-      flex-shrink: 0;
     }
     .cart-item-img img {
       width: 100%;
@@ -372,63 +325,61 @@
     .cart-item-info { flex: 1; }
     .cart-item-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
     .cart-item-price { font-size: 16px; font-weight: 700; color: var(--accent); }
-    .cart-empty {
-      text-align: center;
-      padding: 40px 20px;
-      color: var(--text-sec);
-    }
-    .cart-empty-icon { font-size: 48px; margin-bottom: 12px; }
-
-    /* Order form slide-up */
-    .order-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.4);
-      z-index: 500;
-      display: none;
-    }
-    .order-overlay.active { display: block; }
-    .order-sheet {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--surface);
-      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-      z-index: 501;
-      padding: 24px 20px 40px;
-      max-height: 90vh;
-      overflow-y: auto;
-      transform: translateY(100%);
-      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
-    }
-    .order-sheet.active { transform: translateY(0); }
-    .order-title {
-      font-size: 22px;
-      font-weight: 800;
-      margin-bottom: 20px;
+    .cart-item-qty {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 10px;
     }
-    .order-close {
-      width: 36px;
-      height: 36px;
+    .qty-btn {
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
-      background: var(--border);
+      border: 2px solid var(--border);
+      background: white;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .qty-val { font-size: 16px; font-weight: 700; min-width: 20px; text-align: center; }
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+      font-size: 18px;
+      font-weight: 800;
+    }
+    .cart-submit {
+      width: 100%;
+      background: var(--cta);
+      color: white;
       border: none;
+      padding: 16px;
+      border-radius: 18px;
       font-size: 16px;
+      font-weight: 700;
       cursor: pointer;
     }
+
+    /* Order form */
+    .order-form {
+      display: none;
+      padding: 20px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .order-form.active { display: block; }
+    .order-form h2 { font-size: 22px; font-weight: 800; margin-bottom: 20px; }
     .form-group { margin-bottom: 16px; }
     .form-group label {
       display: block;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--text-sec);
       margin-bottom: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
     .form-group input, .form-group textarea {
       width: 100%;
@@ -439,174 +390,122 @@
       font-family: inherit;
       outline: none;
       transition: border-color 0.2s;
-      background: var(--bg);
     }
     .form-group input:focus, .form-group textarea:focus {
       border-color: var(--accent);
-      background: white;
     }
     .form-group textarea { resize: vertical; min-height: 80px; }
-    .submit-btn {
-      width: 100%;
+    .order-summary {
+      background: var(--border);
+      border-radius: 14px;
       padding: 16px;
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 16px;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      margin-top: 8px;
-      transition: transform 0.15s, background 0.15s;
+      margin-bottom: 20px;
     }
-    .submit-btn:active { transform: scale(0.98); background: var(--accent-dark); }
-    .submit-btn:disabled { background: var(--text-sec); }
-
-    /* Success */
-    .success-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 600;
-      background: var(--surface);
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 40px 24px;
-      text-align: center;
-    }
-    .success-overlay.active { display: flex; }
-    .success-check {
-      width: 80px;
-      height: 80px;
-      background: var(--accent);
-      border-radius: 50%;
+    .order-summary-row {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 40px;
-      color: white;
-      margin-bottom: 24px;
-      animation: popIn 0.4s cubic-bezier(0.4,0,0.2,1);
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 14px;
     }
-    @keyframes popIn {
-      0% { transform: scale(0); }
-      80% { transform: scale(1.1); }
-      100% { transform: scale(1); }
+    .order-summary-total {
+      display: flex;
+      justify-content: space-between;
+      font-size: 18px;
+      font-weight: 800;
+      padding-top: 8px;
+      border-top: 1px solid rgba(0,0,0,0.1);
     }
-    .success-title { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
-    .success-sub { font-size: 15px; color: var(--text-sec); line-height: 1.5; margin-bottom: 24px; }
-    .success-details {
-      background: var(--bg);
-      border-radius: var(--radius);
-      padding: 16px;
+    .btn-submit {
       width: 100%;
-      text-align: left;
-      margin-bottom: 24px;
-    }
-    .success-details h4 { font-size: 13px; font-weight: 600; color: var(--text-sec); margin-bottom: 8px; }
-    .success-details p { font-size: 14px; line-height: 1.5; }
-    .done-btn {
-      width: 100%;
-      padding: 16px;
       background: var(--accent);
       color: white;
       border: none;
-      border-radius: 16px;
+      padding: 16px;
+      border-radius: 18px;
       font-size: 16px;
       font-weight: 700;
       cursor: pointer;
     }
+    .btn-back {
+      width: 100%;
+      background: transparent;
+      color: var(--accent);
+      border: 2px solid var(--accent);
+      padding: 14px;
+      border-radius: 18px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    /* Success screen */
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 60px 20px;
+    }
+    .success-screen.active { display: block; }
+    .success-icon { font-size: 64px; margin-bottom: 16px; }
+    .success-screen h2 { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+    .success-screen p { color: var(--text-sec); margin-bottom: 24px; }
+    #success-details { font-size: 14px; color: var(--text); text-align: left; background: var(--border); padding: 16px; border-radius: 14px; }
   </style>
 </head>
 <body>
 
-<!-- MAX Bridge -->
-<script src="https://st.max.ru/js/max-web-app.js"></script>
-
-<div id="app">
-  <!-- Главная -->
-  <div id="page-home">
-    <div class="hero">
-      <div class="hero-badge">🚀 Свежие овощи с доставкой</div>
-      <h1>Белая дача</h1>
-      <p>Собрано сегодня на грядке.<br>Доставим за 2 часа.</p>
-      <div class="hero-stats">
-        <div class="hero-stat">
-          <div class="hero-stat-val">9+</div>
-          <div class="hero-stat-label">овощей</div>
-        </div>
-        <div class="hero-stat">
-          <div class="hero-stat-val">2ч</div>
-          <div class="hero-stat-label">доставка</div>
-        </div>
-        <div class="hero-stat">
-          <div class="hero-stat-val">₽₽</div>
-          <div class="hero-stat-label">цены</div>
-        </div>
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-badge">🚜 Фермерский урожай</div>
+    <h1>Белая дача</h1>
+    <p>Свежие овощи прямо с грядки. Доставка на следующий день.</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-val">7</div>
+        <div class="hero-stat-label">позиций</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-val">24ч</div>
+        <div class="hero-stat-label">доставка</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-val">100%</div>
+        <div class="hero-stat-label">свежее</div>
       </div>
     </div>
+  </div>
 
-    <!-- Популярное -->
+  <!-- Catalog section -->
+  <div id="catalog-view">
     <div class="category-section">
       <div class="category-header">
-        <div class="category-title">🔥 Популярное</div>
+        <div class="category-title">🥬 Все овощи</div>
+        <div class="category-count">7 товаров</div>
       </div>
-      <div class="products-scroll" id="scroll-popular"></div>
+      <div class="products-scroll" id="scroll-main"></div>
     </div>
+  </div>
 
-    <!-- Овощи -->
-    <div class="category-section">
-      <div class="category-header">
-        <div class="category-title">🥬 Овощи</div>
+  <!-- Cart overlay -->
+  <div class="cart-overlay" id="cart-overlay">
+    <div class="cart-sheet">
+      <div class="cart-sheet-header">
+        <div class="cart-sheet-title">🛒 Корзина</div>
+        <button class="cart-close" onclick="closeCart()">✕</button>
       </div>
-      <div class="products-scroll" id="scroll-vegetables"></div>
-    </div>
-
-    <!-- Зелень и фрукты -->
-    <div class="category-section">
-      <div class="category-header">
-        <div class="category-title">🌿 Зелень</div>
+      <div id="cart-items"></div>
+      <div class="cart-total">
+        <span>Итого:</span>
+        <span id="cart-total-price">0 ₽</span>
       </div>
-      <div class="products-scroll" id="scroll-greens"></div>
-    </div>
-
-    <div style="height: 100px;"></div>
-  </div>
-</div>
-
-<!-- Cart bar -->
-<div class="cart-bar" id="cart-bar" onclick="openCart()">
-  <div class="cart-bar-left">
-    <div class="cart-icon">
-      🛒
-      <span class="badge" id="cart-bar-count">0</span>
-    </div>
-    <div>
-      <div class="cart-bar-info">Корзина</div>
-      <div class="cart-bar-price" id="cart-bar-price">0 ₽</div>
+      <button class="cart-submit" onclick="goToOrder()">Оформить заказ</button>
     </div>
   </div>
-  <button class="cart-bar-btn" onclick="event.stopPropagation(); openOrder()">Заказать →</button>
-</div>
 
-<!-- Cart overlay -->
-<div class="cart-overlay" id="cart-overlay" onclick="if(event.target===this)closeCart()">
-  <div class="cart-sheet">
-    <div class="cart-sheet-handle"></div>
-    <div class="cart-sheet-title">Корзина</div>
-    <div id="cart-items"></div>
-  </div>
-</div>
-
-<!-- Order overlay -->
-<div class="order-overlay" id="order-overlay"></div>
-<div class="order-sheet" id="order-sheet">
-  <div class="order-title">
-    <span>Оформление заказа</span>
-    <button class="order-close" onclick="closeOrder()">✕</button>
-  </div>
-  <form id="order-form" onsubmit="submitOrder(event)">
+  <!-- Order form -->
+  <div class="order-form" id="order-form">
+    <h2>📦 Оформление заказа</h2>
+    <div class="order-summary" id="order-summary"></div>
     <div class="form-group">
       <label>Имя</label>
       <input type="text" id="f-name" required placeholder="Как к вам обращаться?">
@@ -616,44 +515,51 @@
       <input type="tel" id="f-phone" required placeholder="+7 (___) ___-__-__">
     </div>
     <div class="form-group">
-      <label>Адрес доставки</label>
-      <textarea id="f-address" required placeholder="Город, улица, дом, квартира..."></textarea>
-    </div>
-    <div class="form-group">
-      <label>Когда доставить?</label>
+      <label>Дата доставки</label>
       <input type="date" id="f-date" required>
     </div>
     <div class="form-group">
-      <label>Комментарий</label>
+      <label>Комментарий (необязательно)</label>
       <textarea id="f-comment" placeholder="Пожелания к заказу..."></textarea>
     </div>
-    <button type="submit" class="submit-btn" id="submit-btn">Подтвердить заказ</button>
-  </form>
-</div>
+    <button class="btn-submit" onclick="submitOrder()">Отправить заказ</button>
+    <button class="btn-back" onclick="backToCart()">← Назад в корзину</button>
+  </div>
 
-<!-- Success -->
-<div class="success-overlay" id="success-overlay">
-  <div class="success-check">✓</div>
-  <div class="success-title">Заказ принят!</div>
-  <div class="success-sub" id="success-sub"></div>
-  <div class="success-details" id="success-details"></div>
-  <button class="done-btn" onclick="closeSuccess()">Отлично!</button>
-</div>
+  <!-- Success -->
+  <div class="success-screen" id="success-screen">
+    <div class="success-icon">✅</div>
+    <h2>Заказ принят!</h2>
+    <p>Мы свяжемся с вами для подтверждения.</p>
+    <div id="success-details"></div>
+  </div>
+
+  <!-- Cart bar -->
+  <div class="cart-bar" id="cart-bar">
+    <div class="cart-bar-left">
+      <div class="cart-icon">
+        🛒
+        <div class="badge" id="cart-badge">0</div>
+      </div>
+      <div>
+        <div class="cart-bar-info">В корзине</div>
+        <div class="cart-bar-price" id="cart-bar-price">0 ₽</div>
+      </div>
+    </div>
+    <button class="cart-bar-btn" onclick="openCart()">Перейти →</button>
+  </div>
 
 <script>
+const IMG_URL = 'https://tutbeton-collab.github.io/white-dacha-shop/images/';
+
 const PRODUCTS = [
-  { id: 1, name: 'Помидоры', sub: 'Спелые, с грядки', emoji: '🍅', price: 500, unit: 'ведро', img: 'https://images.unsplash.com/photo-1546470427-e2c4d5abdd4b?w=300&h=200&fit=crop', cat: 'popular' },
-  { id: 2, name: 'Огурцы', sub: 'Хрустящие, свежие', emoji: '🥒', price: 500, unit: 'ведро', img: 'https://images.unsplash.com/photo-1449300079323-02e209d9d3a6?w=300&h=200&fit=crop', cat: 'popular' },
-  { id: 3, name: 'Перец болг.', sub: 'Сочный, сладкий', emoji: '🫑', price: 250, unit: 'ведро', img: 'https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=300&h=200&fit=crop', cat: 'popular' },
-  { id: 4, name: 'Перец острый', sub: 'Ароматный', emoji: '🌶️', price: 100, unit: '12 шт', img: 'https://images.unsplash.com/photo-1583623025817-d180a2221d0a?w=300&h=200&fit=crop', cat: 'vegetables' },
-  { id: 5, name: 'Баклажаны', sub: 'Отборные', emoji: '🍆', price: 300, unit: 'ведро', img: 'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=300&h=200&fit=crop', cat: 'vegetables' },
-  { id: 6, name: 'Картошка', sub: 'Молодой картофель', emoji: '🥔', price: 200, unit: 'ведро', img: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=300&h=200&fit=crop', cat: 'popular' },
-  { id: 7, name: 'Кукуруза', sub: 'Сладкая, молодая', emoji: '🌽', price: 100, unit: '3 шт', img: 'https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=300&h=200&fit=crop', cat: 'vegetables' },
-  { id: 8, name: 'Кабачки', sub: 'Небольшие, нежные', emoji: '🥒', price: 100, unit: '3 шт', img: 'https://images.unsplash.com/photo-1574281143790-752264c0251f?w=300&h=200&fit=crop', cat: 'vegetables' },
-  { id: 9, name: 'Арбуз', sub: 'Спелый, сладкий', emoji: '🍉', price: 100, unit: 'шт', img: 'https://images.unsplash.com/photo-1589984662646-e7b2e4962f18?w=300&h=200&fit=crop', cat: 'vegetables' },
-  { id: 10, name: 'Укроп', sub: 'Ароматный', emoji: '🌿', price: 50, unit: 'пучок', img: 'https://images.unsplash.com/photo-1629157282069-4a0e0633e630?w=300&h=200&fit=crop', cat: 'greens' },
-  { id: 11, name: 'Петрушка', sub: 'Свежая, яркая', emoji: '🌿', price: 50, unit: 'пучок', img: 'https://images.unsplash.com/photo-1629157282069-4a0e0633e630?w=300&h=200&fit=crop', cat: 'greens' },
-  { id: 12, name: 'Лук зелёный', sub: 'Сочный, острый', emoji: '🧅', price: 60, unit: 'пучок', img: 'https://images.unsplash.com/photo-1618512496248-a07fb9c4f506?w=300&h=200&fit=crop', cat: 'greens' },
+  { id: 0, name: 'Томаты', price: 500, unit: 'ведро', emoji: '🍅', img: IMG_URL + 'product_0_full.png' },
+  { id: 1, name: 'Перец', price: 200, unit: 'ведро', emoji: '🫑', img: IMG_URL + 'product_1_full.png' },
+  { id: 2, name: 'Огурец', price: 500, unit: 'ведро', emoji: '🥒', img: IMG_URL + 'product_2_full.png' },
+  { id: 3, name: 'Арбуз', price: 200, unit: 'шт', emoji: '🍉', img: IMG_URL + 'product_3_full.png' },
+  { id: 4, name: 'Горький перец', price: 100, unit: '12 шт', emoji: '🌶️', img: IMG_URL + 'product_4_full.png' },
+  { id: 5, name: 'Баклажан', price: 300, unit: 'ведро', emoji: '🍆', img: IMG_URL + 'product_5_full.png' },
+  { id: 6, name: 'Тыква', price: 35, unit: 'кг', emoji: '🎃', img: IMG_URL + 'product_6_full.png' }
 ];
 
 let cart = {};
@@ -666,138 +572,107 @@ function init() {
   document.getElementById('f-date').min = tomorrow.toISOString().split('T')[0];
   document.getElementById('f-date').value = document.getElementById('f-date').min;
   
+  // Auto-fill name from MAX user
+  if (window.WebApp && window.WebApp.initData && window.WebApp.initData.user) {
+    const user = window.WebApp.initData.user;
+    const nameEl = document.getElementById('f-name');
+    if (nameEl && user.first_name) {
+      nameEl.value = user.first_name + (user.last_name ? ' ' + user.last_name : '');
+    }
+  }
+  
   renderAll();
 }
 
 function renderAll() {
-  renderScroll('scroll-popular', PRODUCTS.filter(p => p.cat === 'popular'), true);
-  renderScroll('scroll-vegetables', PRODUCTS.filter(p => p.cat === 'vegetables'), false);
-  renderScroll('scroll-greens', PRODUCTS.filter(p => p.cat === 'greens'), false);
+  renderScroll('scroll-main', PRODUCTS, true);
 }
 
 function renderScroll(containerId, items, wide) {
   const container = document.getElementById(containerId);
-  
-  container.innerHTML = items.map(p => {
-    const qty = cart[p.id] || 0;
-    if (wide) {
-      return `
-        <div class="product-card product-card-wide">
-          <div class="product-img-wrap">
-            <img class="product-img" src="${p.img}" alt="${p.name}" loading="lazy" 
-                 onerror="this.style.display='none';this.parentElement.style.background='#E8F5E9';this.parentElement.innerHTML='<span style=\\'font-size:48px;display:flex;align-items:center;justify-content:center;height:100%\\'>${p.emoji}</span>'">
-          </div>
-          <div class="product-info">
-            <div class="product-name">${p.name}</div>
-            <div class="product-sub">${p.sub}</div>
-            <div class="product-bottom">
-              <div class="product-price">${p.price} ₽<small>/${p.unit}</small></div>
-              ${qty > 0 ? `
-                <div class="qty-inline">
-                  <button class="qty-btn minus" onclick="changeQty(${p.id},-1)">−</button>
-                  <span class="qty-num">${qty}</span>
-                  <button class="qty-btn plus" onclick="changeQty(${p.id},1)">+</button>
-                </div>
-              ` : `<button class="add-btn" onclick="addToCart(${p.id})">+</button>`}
-            </div>
-          </div>
-        </div>`;
-    }
-    
-    return `
-      <div class="product-card">
-        <div class="product-img-wrap">
-          <img class="product-img" src="${p.img}" alt="${p.name}" loading="lazy"
-               onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#E8F5E9,#F1F8E9)';this.parentElement.innerHTML='<span style=\\'font-size:56px;display:flex;align-items:center;justify-content:center;height:100%\\'>${p.emoji}</span>'">
-          ${p.cat === 'popular' ? '<div class="product-badge">🔥 Хит</div>' : ''}
+  container.innerHTML = items.map(p => `
+    <div class="product-card ${wide ? 'product-card-wide' : ''}" style="position:relative">
+      <div class="product-img-wrap">
+        <img class="product-img" src="${p.img}" alt="${p.name}" loading="lazy" 
+             onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#E8F5E9,#F1F8E9)';this.parentElement.innerHTML='<span style=\\'font-size:56px;display:flex;align-items:center;justify-content:center;height:100%\\'>${p.emoji}</span>'">
+      </div>
+      <div class="product-info">
+        <div class="product-name">${p.name}</div>
+        <div class="product-bottom">
+          <div class="product-price">${p.price} ₽<small>/${p.unit}</small></div>
+          <button class="product-add" onclick="addToCart(${p.id})">+</button>
         </div>
-        <div class="product-info">
-          <div class="product-name">${p.name}</div>
-          <div class="product-sub">${p.sub}</div>
-          <div class="product-bottom">
-            <div class="product-price">${p.price} ₽<small>/${p.unit}</small></div>
-            ${qty > 0 ? `
-              <div class="qty-inline">
-                <button class="qty-btn minus" onclick="changeQty(${p.id},-1)">−</button>
-                <span class="qty-num">${qty}</span>
-                <button class="qty-btn plus" onclick="changeQty(${p.id},1)">+</button>
-              </div>
-            ` : `<button class="add-btn" onclick="addToCart(${p.id})">+</button>`}
-          </div>
-        </div>
-      </div>`;
-  }).join('');
+      </div>
+    </div>
+  `).join('');
 }
 
 function addToCart(id) {
-  cart[id] = (cart[id] || 0) + 1;
-  renderAll();
-  updateCartBar();
+  if (!cart[id]) cart[id] = 0;
+  cart[id]++;
+  updateCart();
   if (window.WebApp?.HapticFeedback) window.WebApp.HapticFeedback.impactOccurred('light');
 }
 
-function changeQty(id, delta) {
-  cart[id] = (cart[id] || 0) + delta;
-  if (cart[id] <= 0) delete cart[id];
-  renderAll();
-  updateCartBar();
+function removeFromCart(id) {
+  if (cart[id]) {
+    cart[id]--;
+    if (cart[id] <= 0) delete cart[id];
+  }
+  updateCart();
 }
 
-function updateCartBar() {
-  const items = Object.entries(cart).filter(([,q]) => q > 0);
-  const count = items.reduce((s,[,q]) => s+q, 0);
-  const total = items.reduce((s,[id,q]) => {
+function updateCart() {
+  const items = Object.entries(cart);
+  const totalCount = items.reduce((s, [, q]) => s + q, 0);
+  const totalPrice = items.reduce((s, [id, q]) => {
     const p = PRODUCTS.find(x => x.id == id);
-    return s + (p?.price || 0) * q;
+    return s + (p ? p.price * q : 0);
   }, 0);
   
-  const bar = document.getElementById('cart-bar');
-  const badge = document.getElementById('cart-bar-count');
-  const price = document.getElementById('cart-bar-price');
+  document.getElementById('cart-badge').textContent = totalCount;
+  document.getElementById('cart-bar-price').textContent = totalPrice + ' ₽';
   
-  if (count > 0) {
-    bar.classList.add('visible');
-    badge.textContent = count;
-    price.textContent = total + ' ₽';
+  if (totalCount > 0) {
+    document.getElementById('cart-bar').classList.add('visible');
   } else {
-    bar.classList.remove('visible');
+    document.getElementById('cart-bar').classList.remove('visible');
   }
 }
 
 function openCart() {
-  const items = Object.entries(cart).map(([id, qty]) => {
-    const p = PRODUCTS.find(x => x.id == id);
-    return { ...p, qty };
-  }).filter(x => x.qty > 0);
-  
   const container = document.getElementById('cart-items');
+  const items = Object.entries(cart);
   
   if (items.length === 0) {
-    container.innerHTML = `<div class="cart-empty"><div class="cart-empty-icon">🛒</div><p>Корзина пуста</p></div>`;
+    container.innerHTML = '<div class="cart-empty"><div class="cart-empty-icon">🛒</div><p>Корзина пуста</p></div>';
+    document.getElementById('cart-total-price').textContent = '0 ₽';
   } else {
-    const total = items.reduce((s, x) => s + x.price * x.qty, 0);
-    container.innerHTML = `
-      ${items.map(x => `
+    container.innerHTML = items.map(([id, qty]) => {
+      const x = PRODUCTS.find(p => p.id == id);
+      return `
         <div class="cart-item">
           <div class="cart-item-img">
             <img src="${x.img}" alt="${x.name}" onerror="this.style.display='none';this.parentElement.innerHTML='${x.emoji}';this.parentElement.style.fontSize='32px';this.parentElement.style.display='flex';this.parentElement.style.alignItems='center';this.parentElement.style.justifyContent='center'">
           </div>
           <div class="cart-item-info">
             <div class="cart-item-name">${x.name}</div>
-            <div class="cart-item-price">${x.price * x.qty} ₽</div>
+            <div class="cart-item-price">${x.price} ₽/${x.unit}</div>
           </div>
-          <div class="qty-inline">
-            <button class="qty-btn minus" onclick="changeQty(${x.id},-1)">−</button>
-            <span class="qty-num">${x.qty}</span>
-            <button class="qty-btn plus" onclick="changeQty(${x.id},1)">+</button>
+          <div class="cart-item-qty">
+            <button class="qty-btn" onclick="removeFromCart(${id})">−</button>
+            <div class="qty-val">${qty}</div>
+            <button class="qty-btn" onclick="addToCart(${id})">+</button>
           </div>
         </div>
-      `).join('')}
-      <div style="padding-top:16px;border-top:2px solid var(--border);margin-top:8px;display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-size:16px;font-weight:600;">Итого</span>
-        <span style="font-size:20px;font-weight:800;color:var(--accent);">${total} ₽</span>
-      </div>
-    `;
+      `;
+    }).join('');
+    
+    const total = items.reduce((s, [id, q]) => {
+      const p = PRODUCTS.find(x => x.id == id);
+      return s + (p ? p.price * q : 0);
+    }, 0);
+    document.getElementById('cart-total-price').textContent = total + ' ₽';
   }
   
   document.getElementById('cart-overlay').classList.add('active');
@@ -807,82 +682,72 @@ function closeCart() {
   document.getElementById('cart-overlay').classList.remove('active');
 }
 
-function openOrder() {
+function goToOrder() {
   closeCart();
-  document.getElementById('order-overlay').classList.add('active');
-  document.getElementById('order-sheet').classList.add('active');
-}
-
-function closeOrder() {
-  document.getElementById('order-overlay').classList.remove('active');
-  document.getElementById('order-sheet').classList.remove('active');
-}
-
-async function submitOrder(e) {
-  e.preventDefault();
-  const btn = document.getElementById('submit-btn');
-  btn.disabled = true;
-  btn.textContent = 'Отправка...';
+  document.getElementById('catalog-view').style.display = 'none';
+  document.getElementById('cart-bar').style.display = 'none';
+  document.getElementById('order-form').classList.add('active');
   
-  const items = Object.entries(cart).map(([id, qty]) => {
+  const items = Object.entries(cart);
+  const total = items.reduce((s, [id, q]) => {
     const p = PRODUCTS.find(x => x.id == id);
-    return `${p.emoji} ${p.name} — ${qty} × ${p.unit} = ${qty * p.price} ₽`;
-  }).join('\n');
-  
-  const total = Object.entries(cart).reduce((s, [id, qty]) => {
-    const p = PRODUCTS.find(x => x.id == id);
-    return s + p.price * qty;
+    return s + (p ? p.price * q : 0);
   }, 0);
   
-  const name = document.getElementById('f-name').value;
-  const phone = document.getElementById('f-phone').value;
-  const address = document.getElementById('f-address').value;
-  const date = document.getElementById('f-date').value;
-  const comment = document.getElementById('f-comment').value;
-  
-  const text = `🛒 НОВЫЙ ЗАКАЗ — Белая дача\n\n${items}\n\n💰 Итого: ${total} ₽\n\n👤 ${name}\n📱 ${phone}\n📍 ${address}\n📅 ${date}\n💬 ${comment || '—'}`;
-  
-  try {
-    const response = await fetch('https://platform-api.max.ru/messages?chat_id=72239874', {
-      method: 'POST',
-      headers: {
-        'Authorization': 'f9LHodD0cOKFL-oH0VPTMHXpJNS6Sw5p6-6njHawNW5WNWZYwLa80iKMfegqFXgB1wINPS85bnC4lZSITS8-',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ text, notify: true })
-    });
-    
-    if (response.ok) {
-      document.getElementById('success-sub').textContent = 
-        `Заказ на ${total} ₽ принят!\nДоставка: ${date}\nАдрес: ${address}\n\nОплата наличными при получении.\nМы свяжемся для подтверждения.`;
-      document.getElementById('success-details').innerHTML = `
-        <h4>Состав заказа</h4>
-        <p>${items.replace(/\n/g, '<br>')}</p>
-        <p style="margin-top:8px;font-weight:700;color:var(--accent);">Итого: ${total} ₽</p>
-      `;
-      closeOrder();
-      document.getElementById('success-overlay').classList.add('active');
-    } else {
-      alert('Ошибка отправки. Попробуйте позже.');
-      btn.disabled = false;
-      btn.textContent = 'Подтвердить заказ';
-    }
-  } catch (err) {
-    alert('Ошибка сети. Проверьте подключение.');
-    btn.disabled = false;
-    btn.textContent = 'Подтвердить заказ';
-  }
+  document.getElementById('order-summary').innerHTML = items.map(([id, q]) => {
+    const p = PRODUCTS.find(x => x.id == id);
+    return `<div class="order-summary-row"><span>${p.name} × ${q}</span><span>${p.price * q} ₽</span></div>`;
+  }).join('') + `<div class="order-summary-total"><span>Итого</span><span>${total} ₽</span></div>`;
 }
 
-function closeSuccess() {
-  document.getElementById('success-overlay').classList.remove('active');
+function backToCart() {
+  document.getElementById('order-form').classList.remove('active');
+  document.getElementById('catalog-view').style.display = '';
+  if (Object.keys(cart).length > 0) document.getElementById('cart-bar').style.display = '';
+  openCart();
+}
+
+function submitOrder() {
+  const name = document.getElementById('f-name').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
+  const date = document.getElementById('f-date').value;
+  const comment = document.getElementById('f-comment').value.trim();
+  
+  if (!name || !phone) {
+    alert('Заполните имя и телефон');
+    return;
+  }
+  
+  const items = Object.entries(cart).map(([id, q]) => {
+    const p = PRODUCTS.find(x => x.id == id);
+    return `${p.name} × ${q} = ${p.price * q} ₽`;
+  }).join('\n');
+  
+  const total = Object.entries(cart).reduce((s, [id, q]) => {
+    const p = PRODUCTS.find(x => x.id == id);
+    return s + (p ? p.price * q : 0);
+  }, 0);
+  
+  const orderText = `НОВЫЙ ЗАКАЗ\n\n👤 ${name}\n📱 ${phone}\n📅 ${date}\n\n${items}\n\n💰 Итого: ${total} ₽\n${comment ? '\n💬 ' + comment : ''}`;
+  
+  // Send to bot server
+  fetch('http://31.76.225.127:8091/api/orders', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, phone, date, comment, items, total })
+  }).catch(() => {});
+  
+  // Also send via WebApp if available
+  if (window.WebApp && window.WebApp.callEvent) {
+    window.WebApp.callEvent('order', { name, phone, date, comment, items, total });
+  }
+  
+  document.getElementById('order-form').classList.remove('active');
+  document.getElementById('success-screen').classList.add('active');
+  document.getElementById('success-details').innerHTML = `<pre style="white-space:pre-wrap;font-family:inherit">${orderText}</pre>`;
+  
   cart = {};
-  updateCartBar();
-  renderAll();
-  document.getElementById('order-form').reset();
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  document.getElementById('f-date').value = tomorrow.toISOString().split('T')[0];
+  updateCart();
 }
 
 init();
