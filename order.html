@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>� Белая Дача — Заказ</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, 'Segoe UI', Roboto, sans-serif; background: #F5F0E8; min-height: 100vh; }
+.header { background: linear-gradient(135deg, #2E7D32, #4CAF50); color: white; padding: 20px 16px; text-align: center; }
+.header h1 { font-size: 20px; }
+.form { padding: 20px 16px; }
+.form-group { margin-bottom: 16px; }
+.form-label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; color: #555; }
+.form-input {
+  width: 100%; padding: 14px 16px;
+  border: 2px solid #E0E0E0; border-radius: 10px;
+  font-size: 16px; background: white;
+  transition: border-color 0.2s;
+}
+.form-input:focus { border-color: #4CAF50; outline: none; }
+.form-textarea { min-height: 80px; resize: vertical; }
+.total-box { background: white; border-radius: 12px; padding: 16px; margin: 16px; text-align: center; font-size: 18px; font-weight: 700; }
+.submit-btn {
+  display: block; width: calc(100% - 32px);
+  margin: 16px; padding: 16px;
+  background: #FF6F00; color: white;
+  border: none; border-radius: 12px;
+  font-size: 18px; font-weight: 700;
+  cursor: pointer;
+}
+.submit-btn:active { background: #E65100; }
+.success { text-align: center; padding: 60px 20px; }
+.success h2 { font-size: 24px; margin-bottom: 12px; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>� Оформить заказ</h1>
+</div>
+<div class="total-box" id="orderTotal">Сумма: 0 �</div>
+<div class="form">
+  <div class="form-group">
+    <label class="form-label">Ваше имя</label>
+    <input class="form-input" id="inputName" placeholder="Иван">
+  </div>
+  <div class="form-group">
+    <label class="form-label">Телефон</label>
+    <input class="form-input" id="inputPhone" placeholder="+7..." type="tel">
+  </div>
+  <div class="form-group">
+    <label class="form-label">Комментарий (адрес, пожелания)</label>
+    <textarea class="form-input form-textarea" id="inputComment" placeholder="Адрес доставки..."></textarea>
+  </div>
+</div>
+<button class="submit-btn" id="submitBtn" onclick="submitOrder()">Отправить заказ</button>
+
+<script>
+const CATALOG = [
+  { id:0, name:'Томаты', price:500 }, { id:1, name:'Перец', price:200 },
+  { id:2, name:'Огурец', price:500 }, { id:3, name:'Арбуз', price:200 },
+  { id:4, name:'Горький перец', price:100 }, { id:5, name:'Баклажан', price:300 },
+  { id:6, name:'Тыква', price:35 },
+];
+
+function getTotal() {
+  let cart = JSON.parse(localStorage.getItem('bd_cart') || '{}');
+  let total = 0, count = 0;
+  for (const [id, qty] of Object.entries(cart)) {
+    const p = CATALOG.find(x => x.id === Number(id));
+    if (p) { total += p.price * qty; count += qty; }
+  }
+  return { total, count };
+}
+
+document.getElementById('orderTotal').textContent = `Сумма заказа: ${getTotal().total} �`;
+
+function submitOrder() {
+  const name = document.getElementById('inputName').value.trim();
+  const phone = document.getElementById('inputPhone').value.trim();
+  const comment = document.getElementById('inputComment').value.trim();
+  
+  if (!name) { alert('Введите ваше имя'); document.getElementById('inputName').focus(); return; }
+  if (!phone) { alert('Введите телефон'); document.getElementById('inputPhone').focus(); return; }
+  
+  const { total, count } = JSON.parse(localStorage.getItem('bd_cart') || '{}') ? getTotal() : {total:0,count:0};
+  let items = {};
+  const cart = JSON.parse(localStorage.getItem('bd_cart') || '{}');
+  for (const [id, qty] of Object.entries(cart)) {
+    if (qty > 0) items[id] = qty;
+  }
+  
+  const order = {
+    name, phone, address: comment,
+    items, total,
+    message: comment
+  };
+  
+  // Send to bot server
+  fetch('https://tutbeton-collab.github.io/white-dacha-shop/api/orders', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(order)
+  }).then(r => r.json()).then(data => {
+    if (data.ok) {
+      localStorage.removeItem('bd_cart');
+      document.body.innerHTML = '<div class="header"><h1>Заказ принят!</h1></div><div class="success"><h2>✅ Спасибо!</h2><p>Мы свяжемся с вами для подтверждения.</p><p style="margin-top:20px"><a href="index.html">Назад в каталог</a></p></div>';
+    } else {
+      alert('Ошибка: ' + (data.error || 'Попробуйте позже'));
+    }
+  }).catch(e => {
+    alert('Ошибка сети. Попробуйте еще раз.');
+  });
+}
+body>
+</html>
