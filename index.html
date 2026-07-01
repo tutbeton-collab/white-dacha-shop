@@ -1,756 +1,501 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Белая дача — Доставка овощей</title>
-  <script src="https://st.max.ru/js/max-web-app.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    
-    :root {
-      --accent: #2E7D32;
-      --accent-light: #43A047;
-      --accent-dark: #1B5E20;
-      --cta: #FF6D00;
-      --cta-hover: #E65100;
-      --bg: #FAFAFA;
-      --surface: #FFFFFF;
-      --text: #1C1C1E;
-      --text-sec: #8E8E93;
-      --border: #F2F2F7;
-      --radius: 20px;
-      --radius-lg: 28px;
-    }
-    
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      padding-bottom: 100px;
-    }
-
-    /* Hero */
-    .hero {
-      background: linear-gradient(180deg, var(--accent) 0%, var(--accent-light) 100%);
-      padding: 48px 24px 32px;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      right: -30%;
-      width: 80%;
-      height: 150%;
-      background: radial-gradient(ellipse, rgba(255,255,255,0.1) 0%, transparent 70%);
-    }
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(255,255,255,0.2);
-      color: white;
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-      margin-bottom: 16px;
-      backdrop-filter: blur(10px);
-    }
-    .hero h1 {
-      color: white;
-      font-size: 32px;
-      font-weight: 800;
-      line-height: 1.1;
-      margin-bottom: 8px;
-    }
-    .hero p {
-      color: rgba(255,255,255,0.85);
-      font-size: 16px;
-      line-height: 1.4;
-      margin-bottom: 24px;
-    }
-    .hero-stats {
-      display: flex;
-      gap: 24px;
-    }
-    .hero-stat { text-align: center; }
-    .hero-stat-val {
-      color: white;
-      font-size: 20px;
-      font-weight: 800;
-    }
-    .hero-stat-label {
-      color: rgba(255,255,255,0.7);
-      font-size: 11px;
-      margin-top: 2px;
-    }
-
-    /* Category sections */
-    .category-section { padding: 24px 0 0; }
-    .category-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 20px;
-      margin-bottom: 16px;
-    }
-    .category-title {
-      font-size: 20px;
-      font-weight: 700;
-    }
-    .category-count {
-      font-size: 13px;
-      color: var(--text-sec);
-      background: var(--border);
-      padding: 4px 10px;
-      border-radius: 12px;
-    }
-
-    /* Horizontal scroll products */
-    .products-scroll {
-      display: flex;
-      gap: 12px;
-      padding: 0 20px 8px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-    }
-    .products-scroll::-webkit-scrollbar { display: none; }
-    
-    .product-card {
-      flex: 0 0 160px;
-      background: var(--surface);
-      border-radius: var(--radius);
-      overflow: hidden;
-      scroll-snap-align: start;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    }
-    .product-card-wide {
-      flex: 0 0 220px;
-    }
-    .product-card-wide .product-img-wrap {
-      height: 140px;
-    }
-    .product-img-wrap {
-      width: 100%;
-      height: 120px;
-      background: #E8F5E9;
-      overflow: hidden;
-    }
-    .product-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .product-badge {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      background: var(--accent);
-      color: white;
-      font-size: 10px;
-      font-weight: 600;
-      padding: 3px 8px;
-      border-radius: 8px;
-    }
-    .product-info { padding: 12px; }
-    .product-name {
-      font-size: 15px;
-      font-weight: 600;
-      margin-bottom: 2px;
-    }
-    .product-sub {
-      font-size: 12px;
-      color: var(--text-sec);
-      margin-bottom: 8px;
-    }
-    .product-bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .product-price {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--accent);
-    }
-    .product-price small {
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--text-sec);
-    }
-    .product-add {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: var(--accent);
-      color: white;
-      border: none;
-      font-size: 22px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.1s;
-    }
-    .product-add:active {
-      transform: scale(0.9);
-    }
-
-    /* Cart bar */
-    .cart-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--surface);
-      padding: 16px 20px;
-      padding-bottom: max(16px, env(safe-area-inset-bottom));
-      display: none;
-      align-items: center;
-      gap: 16px;
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
-      z-index: 100;
-    }
-    .cart-bar.visible { display: flex; }
-    .cart-bar-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex: 1;
-    }
-    .cart-icon {
-      width: 44px;
-      height: 44px;
-      background: var(--accent);
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      position: relative;
-    }
-    .cart-icon .badge {
-      position: absolute;
-      top: -4px;
-      right: -4px;
-      background: var(--cta);
-      color: white;
-      font-size: 11px;
-      font-weight: 700;
-      min-width: 18px;
-      height: 18px;
-      border-radius: 9px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 4px;
-    }
-    .cart-bar-info { font-size: 13px; font-weight: 500; opacity: 0.8; }
-    .cart-bar-price { font-size: 18px; font-weight: 800; }
-    .cart-bar-btn {
-      background: var(--cta);
-      color: white;
-      border: none;
-      padding: 14px 24px;
-      border-radius: 16px;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    /* Cart overlay */
-    .cart-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.4);
-      z-index: 200;
-      align-items: flex-end;
-      justify-content: center;
-    }
-    .cart-overlay.active { display: flex; }
-    .cart-sheet {
-      background: var(--surface);
-      width: 100%;
-      max-width: 500px;
-      max-height: 85vh;
-      border-radius: 24px 24px 0 0;
-      overflow-y: auto;
-      padding: 24px 20px;
-      padding-bottom: max(24px, env(safe-area-inset-bottom));
-    }
-    .cart-sheet-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
-    .cart-sheet-title { font-size: 22px; font-weight: 800; }
-    .cart-close {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: var(--border);
-      border: none;
-      font-size: 18px;
-      cursor: pointer;
-    }
-    .cart-empty { text-align: center; padding: 40px 0; color: var(--text-sec); }
-    .cart-empty-icon { font-size: 48px; margin-bottom: 12px; }
-    .cart-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .cart-item-img {
-      width: 56px;
-      height: 56px;
-      border-radius: 12px;
-      background: #E8F5E9;
-      overflow: hidden;
-    }
-    .cart-item-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .cart-item-info { flex: 1; }
-    .cart-item-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-    .cart-item-price { font-size: 16px; font-weight: 700; color: var(--accent); }
-    .cart-item-qty {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .qty-btn {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      border: 2px solid var(--border);
-      background: white;
-      font-size: 18px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .qty-val { font-size: 16px; font-weight: 700; min-width: 20px; text-align: center; }
-    .cart-total {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 0;
-      font-size: 18px;
-      font-weight: 800;
-    }
-    .cart-submit {
-      width: 100%;
-      background: var(--cta);
-      color: white;
-      border: none;
-      padding: 16px;
-      border-radius: 18px;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    /* Order form */
-    .order-form {
-      display: none;
-      padding: 20px;
-      max-width: 500px;
-      margin: 0 auto;
-    }
-    .order-form.active { display: block; }
-    .order-form h2 { font-size: 22px; font-weight: 800; margin-bottom: 20px; }
-    .form-group { margin-bottom: 16px; }
-    .form-group label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-sec);
-      margin-bottom: 6px;
-    }
-    .form-group input, .form-group textarea {
-      width: 100%;
-      padding: 14px 16px;
-      border: 2px solid var(--border);
-      border-radius: 14px;
-      font-size: 15px;
-      font-family: inherit;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-    .form-group input:focus, .form-group textarea:focus {
-      border-color: var(--accent);
-    }
-    .form-group textarea { resize: vertical; min-height: 80px; }
-    .order-summary {
-      background: var(--border);
-      border-radius: 14px;
-      padding: 16px;
-      margin-bottom: 20px;
-    }
-    .order-summary-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 8px;
-      font-size: 14px;
-    }
-    .order-summary-total {
-      display: flex;
-      justify-content: space-between;
-      font-size: 18px;
-      font-weight: 800;
-      padding-top: 8px;
-      border-top: 1px solid rgba(0,0,0,0.1);
-    }
-    .btn-submit {
-      width: 100%;
-      background: var(--accent);
-      color: white;
-      border: none;
-      padding: 16px;
-      border-radius: 18px;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .btn-back {
-      width: 100%;
-      background: transparent;
-      color: var(--accent);
-      border: 2px solid var(--accent);
-      padding: 14px;
-      border-radius: 18px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-
-    /* Success screen */
-    .success-screen {
-      display: none;
-      text-align: center;
-      padding: 60px 20px;
-    }
-    .success-screen.active { display: block; }
-    .success-icon { font-size: 64px; margin-bottom: 16px; }
-    .success-screen h2 { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
-    .success-screen p { color: var(--text-sec); margin-bottom: 24px; }
-    #success-details { font-size: 14px; color: var(--text); text-align: left; background: var(--border); padding: 16px; border-radius: 14px; }
-  </style>
-</head>
-<body>
-
-  <!-- Hero -->
-  <div class="hero">
-    <div class="hero-badge">🚜 Фермерский урожай</div>
-    <h1>Белая дача</h1>
-    <p>Свежие овощи прямо с грядки. Доставка на следующий день.</p>
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <div class="hero-stat-val">7</div>
-        <div class="hero-stat-label">позиций</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-val">24ч</div>
-        <div class="hero-stat-label">доставка</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-val">100%</div>
-        <div class="hero-stat-label">свежее</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Catalog section -->
-  <div id="catalog-view">
-    <div class="category-section">
-      <div class="category-header">
-        <div class="category-title">🥬 Все овощи</div>
-        <div class="category-count">7 товаров</div>
-      </div>
-      <div class="products-scroll" id="scroll-main"></div>
-    </div>
-  </div>
-
-  <!-- Cart overlay -->
-  <div class="cart-overlay" id="cart-overlay">
-    <div class="cart-sheet">
-      <div class="cart-sheet-header">
-        <div class="cart-sheet-title">🛒 Корзина</div>
-        <button class="cart-close" onclick="closeCart()">✕</button>
-      </div>
-      <div id="cart-items"></div>
-      <div class="cart-total">
-        <span>Итого:</span>
-        <span id="cart-total-price">0 ₽</span>
-      </div>
-      <button class="cart-submit" onclick="goToOrder()">Оформить заказ</button>
-    </div>
-  </div>
-
-  <!-- Order form -->
-  <div class="order-form" id="order-form">
-    <h2>📦 Оформление заказа</h2>
-    <div class="order-summary" id="order-summary"></div>
-    <div class="form-group">
-      <label>Имя</label>
-      <input type="text" id="f-name" required placeholder="Как к вам обращаться?">
-    </div>
-    <div class="form-group">
-      <label>Телефон</label>
-      <input type="tel" id="f-phone" required placeholder="+7 (___) ___-__-__">
-    </div>
-    <div class="form-group">
-      <label>Дата доставки</label>
-      <input type="date" id="f-date" required>
-    </div>
-    <div class="form-group">
-      <label>Комментарий (необязательно)</label>
-      <textarea id="f-comment" placeholder="Пожелания к заказу..."></textarea>
-    </div>
-    <button class="btn-submit" onclick="submitOrder()">Отправить заказ</button>
-    <button class="btn-back" onclick="backToCart()">← Назад в корзину</button>
-  </div>
-
-  <!-- Success -->
-  <div class="success-screen" id="success-screen">
-    <div class="success-icon">✅</div>
-    <h2>Заказ принят!</h2>
-    <p>Мы свяжемся с вами для подтверждения.</p>
-    <div id="success-details"></div>
-  </div>
-
-  <!-- Cart bar -->
-  <div class="cart-bar" id="cart-bar">
-    <div class="cart-bar-left">
-      <div class="cart-icon">
-        🛒
-        <div class="badge" id="cart-badge">0</div>
-      </div>
-      <div>
-        <div class="cart-bar-info">В корзине</div>
-        <div class="cart-bar-price" id="cart-bar-price">0 ₽</div>
-      </div>
-    </div>
-    <button class="cart-bar-btn" onclick="openCart()">Перейти →</button>
-  </div>
-
-<script>
-const IMG_URL = 'https://tutbeton-collab.github.io/white-dacha-shop/images/';
-
-const PRODUCTS = [
-  { id: 0, name: 'Томаты', price: 500, unit: 'ведро', emoji: '🍅', img: IMG_URL + 'product_0_full.png' },
-  { id: 1, name: 'Перец', price: 200, unit: 'ведро', emoji: '🫑', img: IMG_URL + 'product_1_full.png' },
-  { id: 2, name: 'Огурец', price: 500, unit: 'ведро', emoji: '🥒', img: IMG_URL + 'product_2_full.png' },
-  { id: 3, name: 'Арбуз', price: 200, unit: 'шт', emoji: '🍉', img: IMG_URL + 'product_3_full.png' },
-  { id: 4, name: 'Горький перец', price: 100, unit: '12 шт', emoji: '🌶️', img: IMG_URL + 'product_4_full.png' },
-  { id: 5, name: 'Баклажан', price: 300, unit: 'ведро', emoji: '🍆', img: IMG_URL + 'product_5_full.png' },
-  { id: 6, name: 'Тыква', price: 35, unit: 'кг', emoji: '🎃', img: IMG_URL + 'product_6_full.png' }
-];
-
-let cart = {};
-
-function init() {
-  if (window.WebApp) { window.WebApp.ready(); }
-  
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  document.getElementById('f-date').min = tomorrow.toISOString().split('T')[0];
-  document.getElementById('f-date').value = document.getElementById('f-date').min;
-  
-  // Auto-fill name from MAX user
-  if (window.WebApp && window.WebApp.initData && window.WebApp.initData.user) {
-    const user = window.WebApp.initData.user;
-    const nameEl = document.getElementById('f-name');
-    if (nameEl && user.first_name) {
-      nameEl.value = user.first_name + (user.last_name ? ' ' + user.last_name : '');
-    }
-  }
-  
-  renderAll();
-}
-
-function renderAll() {
-  renderScroll('scroll-main', PRODUCTS, true);
-}
-
-function renderScroll(containerId, items, wide) {
-  const container = document.getElementById(containerId);
-  container.innerHTML = items.map(p => `
-    <div class="product-card ${wide ? 'product-card-wide' : ''}" style="position:relative">
-      <div class="product-img-wrap">
-        <img class="product-img" src="${p.img}" alt="${p.name}" loading="lazy" 
-             onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#E8F5E9,#F1F8E9)';this.parentElement.innerHTML='<span style=\\'font-size:56px;display:flex;align-items:center;justify-content:center;height:100%\\'>${p.emoji}</span>'">
-      </div>
-      <div class="product-info">
-        <div class="product-name">${p.name}</div>
-        <div class="product-bottom">
-          <div class="product-price">${p.price} ₽<small>/${p.unit}</small></div>
-          <button class="product-add" onclick="addToCart(${p.id})">+</button>
-        </div>
-      </div>
-    </div>
-  `).join('');
-}
-
-function addToCart(id) {
-  if (!cart[id]) cart[id] = 0;
-  cart[id]++;
-  updateCart();
-  if (window.WebApp?.HapticFeedback) window.WebApp.HapticFeedback.impactOccurred('light');
-}
-
-function removeFromCart(id) {
-  if (cart[id]) {
-    cart[id]--;
-    if (cart[id] <= 0) delete cart[id];
-  }
-  updateCart();
-}
-
-function updateCart() {
-  const items = Object.entries(cart);
-  const totalCount = items.reduce((s, [, q]) => s + q, 0);
-  const totalPrice = items.reduce((s, [id, q]) => {
-    const p = PRODUCTS.find(x => x.id == id);
-    return s + (p ? p.price * q : 0);
-  }, 0);
-  
-  document.getElementById('cart-badge').textContent = totalCount;
-  document.getElementById('cart-bar-price').textContent = totalPrice + ' ₽';
-  
-  if (totalCount > 0) {
-    document.getElementById('cart-bar').classList.add('visible');
-  } else {
-    document.getElementById('cart-bar').classList.remove('visible');
-  }
-}
-
-function openCart() {
-  const container = document.getElementById('cart-items');
-  const items = Object.entries(cart);
-  
-  if (items.length === 0) {
-    container.innerHTML = '<div class="cart-empty"><div class="cart-empty-icon">🛒</div><p>Корзина пуста</p></div>';
-    document.getElementById('cart-total-price').textContent = '0 ₽';
-  } else {
-    container.innerHTML = items.map(([id, qty]) => {
-      const x = PRODUCTS.find(p => p.id == id);
-      return `
-        <div class="cart-item">
-          <div class="cart-item-img">
-            <img src="${x.img}" alt="${x.name}" onerror="this.style.display='none';this.parentElement.innerHTML='${x.emoji}';this.parentElement.style.fontSize='32px';this.parentElement.style.display='flex';this.parentElement.style.alignItems='center';this.parentElement.style.justifyContent='center'">
-          </div>
-          <div class="cart-item-info">
-            <div class="cart-item-name">${x.name}</div>
-            <div class="cart-item-price">${x.price} ₽/${x.unit}</div>
-          </div>
-          <div class="cart-item-qty">
-            <button class="qty-btn" onclick="removeFromCart(${id})">−</button>
-            <div class="qty-val">${qty}</div>
-            <button class="qty-btn" onclick="addToCart(${id})">+</button>
-          </div>
-        </div>
-      `;
-    }).join('');
-    
-    const total = items.reduce((s, [id, q]) => {
-      const p = PRODUCTS.find(x => x.id == id);
-      return s + (p ? p.price * q : 0);
-    }, 0);
-    document.getElementById('cart-total-price').textContent = total + ' ₽';
-  }
-  
-  document.getElementById('cart-overlay').classList.add('active');
-}
-
-function closeCart() {
-  document.getElementById('cart-overlay').classList.remove('active');
-}
-
-function goToOrder() {
-  closeCart();
-  document.getElementById('catalog-view').style.display = 'none';
-  document.getElementById('cart-bar').style.display = 'none';
-  document.getElementById('order-form').classList.add('active');
-  
-  const items = Object.entries(cart);
-  const total = items.reduce((s, [id, q]) => {
-    const p = PRODUCTS.find(x => x.id == id);
-    return s + (p ? p.price * q : 0);
-  }, 0);
-  
-  document.getElementById('order-summary').innerHTML = items.map(([id, q]) => {
-    const p = PRODUCTS.find(x => x.id == id);
-    return `<div class="order-summary-row"><span>${p.name} × ${q}</span><span>${p.price * q} ₽</span></div>`;
-  }).join('') + `<div class="order-summary-total"><span>Итого</span><span>${total} ₽</span></div>`;
-}
-
-function backToCart() {
-  document.getElementById('order-form').classList.remove('active');
-  document.getElementById('catalog-view').style.display = '';
-  if (Object.keys(cart).length > 0) document.getElementById('cart-bar').style.display = '';
-  openCart();
-}
-
-function submitOrder() {
-  const name = document.getElementById('f-name').value.trim();
-  const phone = document.getElementById('f-phone').value.trim();
-  const date = document.getElementById('f-date').value;
-  const comment = document.getElementById('f-comment').value.trim();
-  
-  if (!name || !phone) {
-    alert('Заполните имя и телефон');
-    return;
-  }
-  
-  const items = Object.entries(cart).map(([id, q]) => {
-    const p = PRODUCTS.find(x => x.id == id);
-    return `${p.name} × ${q} = ${p.price * q} ₽`;
-  }).join('\n');
-  
-  const total = Object.entries(cart).reduce((s, [id, q]) => {
-    const p = PRODUCTS.find(x => x.id == id);
-    return s + (p ? p.price * q : 0);
-  }, 0);
-  
-  const orderText = `НОВЫЙ ЗАКАЗ\n\n👤 ${name}\n📱 ${phone}\n📅 ${date}\n\n${items}\n\n💰 Итого: ${total} ₽\n${comment ? '\n💬 ' + comment : ''}`;
-  
-  // Send to bot server
-  fetch('http://31.76.225.127:8091/api/orders', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, phone, date, comment, items, total })
-  }).catch(() => {});
-  
-  // Also send via WebApp if available
-  if (window.WebApp && window.WebApp.callEvent) {
-    window.WebApp.callEvent('order', { name, phone, date, comment, items, total });
-  }
-  
-  document.getElementById('order-form').classList.remove('active');
-  document.getElementById('success-screen').classList.add('active');
-  document.getElementById('success-details').innerHTML = `<pre style="white-space:pre-wrap;font-family:inherit">${orderText}</pre>`;
-  
-  cart = {};
-  updateCart();
-}
-
-init();
-</script>
-</body>
-</html>
+1|1|1|1|1|<!DOCTYPE html>
+2|2|2|2|2|<html lang="ru">
+3|3|3|3|3|<head>
+4|4|4|4|4|  <meta charset="UTF-8">
+5|5|5|5|5|  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+6|6|6|6|6|  <title>Белая дача — Доставка овощей</title>
+7|7|7|7|7|  <script src="https://st.max.ru/js/max-web-app.js"></script>
+8|8|8|8|8|  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+9|9|9|9|9|  <style>
+10|10|10|10|10|    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+11|11|11|11|11|    
+12|12|12|12|12|    :root {
+13|13|13|13|13|      --accent: #2E7D32;
+14|14|14|14|14|      --accent-light: #43A047;
+15|15|15|15|15|      --accent-dark: #1B5E20;
+16|16|16|16|16|      --cta: #FF6D00;
+17|17|17|17|17|      --cta-hover: #E65100;
+18|18|18|18|18|      --bg: #FAFAFA;
+19|19|19|19|19|      --surface: #FFFFFF;
+20|20|20|20|20|      --text: #1C1C1E;
+21|21|21|21|21|      --text-sec: #8E8E93;
+22|22|22|22|22|      --border: #F2F2F7;
+23|23|23|23|23|      --radius: 20px;
+24|24|24|24|24|      --radius-lg: 28px;
+25|25|25|25|25|    }
+26|26|26|26|26|    
+27|27|27|27|27|    body {
+28|28|28|28|28|      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+29|29|29|29|29|      background: var(--bg);
+30|30|30|30|30|      color: var(--text);
+31|31|31|31|31|      min-height: 100vh;
+32|32|32|32|32|      padding-bottom: 100px;
+33|33|33|33|33|    }
+34|34|34|34|34|
+35|35|35|35|35|    /* Hero */
+36|36|36|36|36|    .hero {
+37|37|37|37|37|      background: linear-gradient(180deg, var(--accent) 0%, var(--accent-light) 100%);
+38|38|38|38|38|      padding: 48px 24px 32px;
+39|39|39|39|39|      position: relative;
+40|40|40|40|40|      overflow: hidden;
+41|41|41|41|41|    }
+42|42|42|42|42|    .hero::before {
+43|43|43|43|43|      content: '';
+44|44|44|44|44|      position: absolute;
+45|45|45|45|45|      top: -50%;
+46|46|46|46|46|      right: -30%;
+47|47|47|47|47|      width: 80%;
+48|48|48|48|48|      height: 150%;
+49|49|49|49|49|      background: radial-gradient(ellipse, rgba(255,255,255,0.1) 0%, transparent 70%);
+50|50|50|50|50|    }
+51|51|51|51|51|    .hero-badge {
+52|52|52|52|52|      display: inline-flex;
+53|53|53|53|53|      align-items: center;
+54|54|54|54|54|      gap: 6px;
+55|55|55|55|55|      background: rgba(255,255,255,0.2);
+56|56|56|56|56|      color: white;
+57|57|57|57|57|      padding: 6px 14px;
+58|58|58|58|58|      border-radius: 20px;
+59|59|59|59|59|      font-size: 12px;
+60|60|60|60|60|      font-weight: 600;
+61|61|61|61|61|      margin-bottom: 16px;
+62|62|62|62|62|      backdrop-filter: blur(10px);
+63|63|63|63|63|    }
+64|64|64|64|64|    .hero h1 {
+65|65|65|65|65|      color: white;
+66|66|66|66|66|      font-size: 32px;
+67|67|67|67|67|      font-weight: 800;
+68|68|68|68|68|      line-height: 1.1;
+69|69|69|69|69|      margin-bottom: 8px;
+70|70|70|70|70|    }
+71|71|71|71|71|    .hero p {
+72|72|72|72|72|      color: rgba(255,255,255,0.85);
+73|73|73|73|73|      font-size: 16px;
+74|74|74|74|74|      line-height: 1.4;
+75|75|75|75|75|      margin-bottom: 24px;
+76|76|76|76|76|    }
+77|77|77|77|77|    .hero-stats {
+78|78|78|78|78|      display: flex;
+79|79|79|79|79|      gap: 24px;
+80|80|80|80|80|    }
+81|81|81|81|81|    .hero-stat { text-align: center; }
+82|82|82|82|82|    .hero-stat-val {
+83|83|83|83|83|      color: white;
+84|84|84|84|84|      font-size: 20px;
+85|85|85|85|85|      font-weight: 800;
+86|86|86|86|86|    }
+87|87|87|87|87|    .hero-stat-label {
+88|88|88|88|88|      color: rgba(255,255,255,0.7);
+89|89|89|89|89|      font-size: 11px;
+90|90|90|90|90|      margin-top: 2px;
+91|91|91|91|91|    }
+92|92|92|92|92|
+93|93|93|93|93|    /* Category sections */
+94|94|94|94|94|    .category-section { padding: 24px 0 0; }
+95|95|95|95|95|    .category-header {
+96|96|96|96|96|      display: flex;
+97|97|97|97|97|      align-items: center;
+98|98|98|98|98|      justify-content: space-between;
+99|99|99|99|99|      padding: 0 20px;
+100|100|100|100|100|      margin-bottom: 16px;
+101|101|101|101|101|    }
+102|102|102|102|102|    .category-title {
+103|103|103|103|103|      font-size: 20px;
+104|104|104|104|104|      font-weight: 700;
+105|105|105|105|105|    }
+106|106|106|106|106|    .category-count {
+107|107|107|107|107|      font-size: 13px;
+108|108|108|108|108|      color: var(--text-sec);
+109|109|109|109|109|      background: var(--border);
+110|110|110|110|110|      padding: 4px 10px;
+111|111|111|111|111|      border-radius: 12px;
+112|112|112|112|112|    }
+113|113|113|113|113|
+114|114|114|114|114|    /* Vertical product list */
+115|115|115|115|    .products-scroll {
+116|116|116|116|      display: flex;
+117|117|117|117|      flex-direction: column;
+118|118|118|118|      gap: 12px;
+119|119|119|119|      padding: 0 20px 8px;
+120|120|120|120|    }
+121|121|121|121|123|    
+122|122|122|122|124|    .product-card {
+123|123|123|123|      width: 100%;
+124|124|124|124|      max-width: 400px;
+125|125|125|125|      margin: 0 auto;
+126|126|126|126|      background: var(--surface);
+127|127|127|127|      border-radius: var(--radius);
+128|128|128|128|      overflow: hidden;
+129|129|129|129|      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+130|130|130|130|    }
+131|131|131|131|132|    .product-card-wide {
+132|132|132|132|      width: 100%;
+133|133|133|133|      max-width: 460px;
+134|134|134|134|      margin: 0 auto;
+135|135|135|135|    }
+136|136|136|136|135|    .product-card-wide .product-img-wrap {
+137|      width: 100%;
+138|      height: 260px;
+139|      background: #E8F5E9;
+140|      overflow: hidden;
+141|    }
+142|142|    .product-card-wide .product-img-wrap {
+143|143|      width: 100%;
+144|144|      height: 260px;
+145|145|      background: #E8F5E9;
+146|146|      overflow: hidden;
+147|147|    }
+148|148|145|145|138|    .product-img-wrap {
+149|149|146|146|139|      width: 100%;
+150|150|147|147|140|      height: 200px;
+151|151|148|148|141|      background: #E8F5E9;
+152|152|149|149|142|      overflow: hidden;
+153|153|150|150|143|    }
+154|154|151|151|144|    .product-img {
+155|155|152|152|145|      width: 100%;
+156|156|153|153|146|      height: 100%;
+157|157|154|154|147|      object-fit: cover;
+158|158|155|155|148|    }
+159|159|156|156|149|    .product-badge {
+160|160|157|157|150|      position: absolute;
+161|161|158|158|151|      top: 8px;
+162|162|159|159|152|      left: 8px;
+163|163|160|160|153|      background: var(--accent);
+164|164|161|161|154|      color: white;
+165|165|162|162|155|      font-size: 10px;
+166|166|163|163|156|      font-weight: 600;
+167|167|164|164|157|      padding: 3px 8px;
+168|168|165|165|158|      border-radius: 8px;
+169|169|166|166|159|    }
+170|170|167|167|160|    .product-info { padding: 12px; }
+171|171|168|168|161|    .product-name {
+172|172|169|169|162|      font-size: 15px;
+173|173|170|170|163|      font-weight: 600;
+174|174|171|171|164|      margin-bottom: 2px;
+175|175|172|172|165|    }
+176|176|173|173|166|    .product-sub {
+177|177|174|174|167|      font-size: 12px;
+178|178|175|175|168|      color: var(--text-sec);
+179|179|176|176|169|      margin-bottom: 8px;
+180|180|177|177|170|    }
+181|181|178|178|171|    .product-bottom {
+182|182|179|179|172|      display: flex;
+183|183|180|180|173|      align-items: center;
+184|184|181|181|174|      justify-content: space-between;
+185|185|182|182|175|    }
+186|186|183|183|176|    .product-price {
+187|187|184|184|177|      font-size: 16px;
+188|188|185|185|178|      font-weight: 700;
+189|189|186|186|179|      color: var(--accent);
+190|190|187|187|180|    }
+191|191|188|188|181|    .product-price small {
+192|192|189|189|182|      font-size: 11px;
+193|193|190|190|183|      font-weight: 500;
+194|194|191|191|184|      color: var(--text-sec);
+195|195|192|192|185|    }
+196|196|193|193|186|    .product-add {
+197|197|194|194|187|      width: 36px;
+198|198|195|195|188|      height: 36px;
+199|199|196|196|189|      border-radius: 50%;
+200|200|197|197|190|      background: var(--accent);
+201|201|198|198|191|      color: white;
+202|202|199|199|192|      border: none;
+203|203|200|200|193|      font-size: 22px;
+204|204|201|201|194|      font-weight: 600;
+205|205|202|202|195|      cursor: pointer;
+206|206|203|203|196|      display: flex;
+207|207|204|204|197|      align-items: center;
+208|208|205|205|198|      justify-content: center;
+209|209|206|206|199|      transition: transform 0.1s;
+210|210|207|207|200|    }
+211|211|208|208|201|    .product-add:active {
+212|212|209|209|202|      transform: scale(0.9);
+213|213|210|210|203|    }
+214|214|211|211|204|
+215|215|212|212|205|    /* Cart bar */
+216|216|213|213|206|    .cart-bar {
+217|217|214|214|207|      position: fixed;
+218|218|215|215|208|      bottom: 0;
+219|219|216|216|209|      left: 0;
+220|220|217|217|210|      right: 0;
+221|221|218|218|211|      background: var(--surface);
+222|222|219|219|212|      padding: 16px 20px;
+223|223|220|220|213|      padding-bottom: max(16px, env(safe-area-inset-bottom));
+224|224|221|221|214|      display: none;
+225|225|222|222|215|      align-items: center;
+226|226|223|223|216|      gap: 16px;
+227|227|224|224|217|      box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+228|228|225|225|218|      z-index: 100;
+229|229|226|226|219|    }
+230|230|227|227|220|    .cart-bar.visible { display: flex; }
+231|231|228|228|221|    .cart-bar-left {
+232|232|229|229|222|      display: flex;
+233|233|230|230|223|      align-items: center;
+234|234|231|231|224|      gap: 12px;
+235|235|232|232|225|      flex: 1;
+236|236|233|233|226|    }
+237|237|234|234|227|    .cart-icon {
+238|238|235|235|228|      width: 44px;
+239|239|236|236|229|      height: 44px;
+240|240|237|237|230|      background: var(--accent);
+241|241|238|238|231|      border-radius: 14px;
+242|242|239|239|232|      display: flex;
+243|243|240|240|233|      align-items: center;
+244|244|241|241|234|      justify-content: center;
+245|245|242|242|235|      font-size: 20px;
+246|246|243|243|236|      position: relative;
+247|247|244|244|237|    }
+248|248|245|245|238|    .cart-icon .badge {
+249|249|246|246|239|      position: absolute;
+250|250|247|247|240|      top: -4px;
+251|251|248|248|241|      right: -4px;
+252|252|249|249|242|      background: var(--cta);
+253|253|250|250|243|      color: white;
+254|254|251|251|244|      font-size: 11px;
+255|255|252|252|245|      font-weight: 700;
+256|256|253|253|246|      min-width: 18px;
+257|257|254|254|247|      height: 18px;
+258|258|255|255|248|      border-radius: 9px;
+259|259|256|256|249|      display: flex;
+260|260|257|257|250|      align-items: center;
+261|261|258|258|251|      justify-content: center;
+262|262|259|259|252|      padding: 0 4px;
+263|263|260|260|253|    }
+264|264|261|261|254|    .cart-bar-info { font-size: 13px; font-weight: 500; opacity: 0.8; }
+265|265|262|262|255|    .cart-bar-price { font-size: 18px; font-weight: 800; }
+266|266|263|263|256|    .cart-bar-btn {
+267|267|264|264|257|      background: var(--cta);
+268|268|265|265|258|      color: white;
+269|269|266|266|259|      border: none;
+270|270|267|267|260|      padding: 14px 24px;
+271|271|268|268|261|      border-radius: 16px;
+272|272|269|269|262|      font-size: 15px;
+273|273|270|270|263|      font-weight: 700;
+274|274|271|271|264|      cursor: pointer;
+275|275|272|272|265|    }
+276|276|273|273|266|
+277|277|274|274|267|    /* Cart overlay */
+278|278|275|275|268|    .cart-overlay {
+279|279|276|276|269|      display: none;
+280|280|277|277|270|      position: fixed;
+281|281|278|278|271|      inset: 0;
+282|282|279|279|272|      background: rgba(0,0,0,0.4);
+283|283|280|280|273|      z-index: 200;
+284|284|281|281|274|      align-items: flex-end;
+285|285|282|282|275|      justify-content: center;
+286|286|283|283|276|    }
+287|287|284|284|277|    .cart-overlay.active { display: flex; }
+288|288|285|285|278|    .cart-sheet {
+289|289|286|286|279|      background: var(--surface);
+290|290|287|287|280|      width: 100%;
+291|291|288|288|281|      max-width: 500px;
+292|292|289|289|282|      max-height: 85vh;
+293|293|290|290|283|      border-radius: 24px 24px 0 0;
+294|294|291|291|284|      overflow-y: auto;
+295|295|292|292|285|      padding: 24px 20px;
+296|296|293|293|286|      padding-bottom: max(24px, env(safe-area-inset-bottom));
+297|297|294|294|287|    }
+298|298|295|295|288|    .cart-sheet-header {
+299|299|296|296|289|      display: flex;
+300|300|297|297|290|      align-items: center;
+301|301|298|298|291|      justify-content: space-between;
+302|302|299|299|292|      margin-bottom: 20px;
+303|303|300|300|293|    }
+304|304|301|301|294|    .cart-sheet-title { font-size: 22px; font-weight: 800; }
+305|305|302|302|295|    .cart-close {
+306|306|303|303|296|      width: 36px;
+307|307|304|304|297|      height: 36px;
+308|308|305|305|298|      border-radius: 50%;
+309|309|306|306|299|      background: var(--border);
+310|310|307|307|300|      border: none;
+311|311|308|308|301|      font-size: 18px;
+312|312|309|309|302|      cursor: pointer;
+313|313|310|310|303|    }
+314|314|311|311|304|    .cart-empty { text-align: center; padding: 40px 0; color: var(--text-sec); }
+315|315|312|312|305|    .cart-empty-icon { font-size: 48px; margin-bottom: 12px; }
+316|316|313|313|306|    .cart-item {
+317|317|314|314|307|      display: flex;
+318|318|315|315|308|      align-items: center;
+319|319|316|316|309|      gap: 12px;
+320|320|317|317|310|      padding: 12px 0;
+321|321|318|318|311|      border-bottom: 1px solid var(--border);
+322|322|319|319|312|    }
+323|323|320|320|313|    .cart-item-img {
+324|324|321|321|314|      width: 56px;
+325|325|322|322|315|      height: 56px;
+326|326|323|323|316|      border-radius: 12px;
+327|327|324|324|317|      background: #E8F5E9;
+328|328|325|325|318|      overflow: hidden;
+329|329|326|326|319|    }
+330|330|327|327|320|    .cart-item-img img {
+331|331|328|328|321|      width: 100%;
+332|332|329|329|322|      height: 100%;
+333|333|330|330|323|      object-fit: cover;
+334|334|331|331|324|    }
+335|335|332|332|325|    .cart-item-info { flex: 1; }
+336|336|333|333|326|    .cart-item-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+337|337|334|334|327|    .cart-item-price { font-size: 16px; font-weight: 700; color: var(--accent); }
+338|338|335|335|328|    .cart-item-qty {
+339|339|336|336|329|      display: flex;
+340|340|337|337|330|      align-items: center;
+341|341|338|338|331|      gap: 10px;
+342|342|339|339|332|    }
+343|343|340|340|333|    .qty-btn {
+344|344|341|341|334|      width: 32px;
+345|345|342|342|335|      height: 32px;
+346|346|343|343|336|      border-radius: 50%;
+347|347|344|344|337|      border: 2px solid var(--border);
+348|348|345|345|338|      background: white;
+349|349|346|346|339|      font-size: 18px;
+350|350|347|347|340|      font-weight: 600;
+351|351|348|348|341|      cursor: pointer;
+352|352|349|349|342|      display: flex;
+353|353|350|350|343|      align-items: center;
+354|354|351|351|344|      justify-content: center;
+355|355|352|352|345|    }
+356|356|353|353|346|    .qty-val { font-size: 16px; font-weight: 700; min-width: 20px; text-align: center; }
+357|357|354|354|347|    .cart-total {
+358|358|355|355|348|      display: flex;
+359|359|356|356|349|      justify-content: space-between;
+360|360|357|357|350|      align-items: center;
+361|361|358|358|351|      padding: 20px 0;
+362|362|359|359|352|      font-size: 18px;
+363|363|360|360|353|      font-weight: 800;
+364|364|361|361|354|    }
+365|365|362|362|355|    .cart-submit {
+366|366|363|363|356|      width: 100%;
+367|367|364|364|357|      background: var(--cta);
+368|368|365|365|358|      color: white;
+369|369|366|366|359|      border: none;
+370|370|367|367|360|      padding: 16px;
+371|371|368|368|361|      border-radius: 18px;
+372|372|369|369|362|      font-size: 16px;
+373|373|370|370|363|      font-weight: 700;
+374|374|371|371|364|      cursor: pointer;
+375|375|372|372|365|    }
+376|376|373|373|366|
+377|377|374|374|367|    /* Order form */
+378|378|375|375|368|    .order-form {
+379|379|376|376|369|      display: none;
+380|380|377|377|370|      padding: 20px;
+381|381|378|378|371|      max-width: 500px;
+382|382|379|379|372|      margin: 0 auto;
+383|383|380|380|373|    }
+384|384|381|381|374|    .order-form.active { display: block; }
+385|385|382|382|375|    .order-form h2 { font-size: 22px; font-weight: 800; margin-bottom: 20px; }
+386|386|383|383|376|    .form-group { margin-bottom: 16px; }
+387|387|384|384|377|    .form-group label {
+388|388|385|385|378|      display: block;
+389|389|386|386|379|      font-size: 13px;
+390|390|387|387|380|      font-weight: 600;
+391|391|388|388|381|      color: var(--text-sec);
+392|392|389|389|382|      margin-bottom: 6px;
+393|393|390|390|383|    }
+394|394|391|391|384|    .form-group input, .form-group textarea {
+395|395|392|392|385|      width: 100%;
+396|396|393|393|386|      padding: 14px 16px;
+397|397|394|394|387|      border: 2px solid var(--border);
+398|398|395|395|388|      border-radius: 14px;
+399|399|396|396|389|      font-size: 15px;
+400|400|397|397|390|      font-family: inherit;
+401|401|398|398|391|      outline: none;
+402|402|399|399|392|      transition: border-color 0.2s;
+403|403|400|400|393|    }
+404|404|401|401|394|    .form-group input:focus, .form-group textarea:focus {
+405|405|402|402|395|      border-color: var(--accent);
+406|406|403|403|396|    }
+407|407|404|404|397|    .form-group textarea { resize: vertical; min-height: 80px; }
+408|408|405|405|398|    .order-summary {
+409|409|406|406|399|      background: var(--border);
+410|410|407|407|400|      border-radius: 14px;
+411|411|408|408|401|      padding: 16px;
+412|412|409|409|402|      margin-bottom: 20px;
+413|413|410|410|403|    }
+414|414|411|411|404|    .order-summary-row {
+415|415|412|412|405|      display: flex;
+416|416|413|413|406|      justify-content: space-between;
+417|417|414|414|407|      margin-bottom: 8px;
+418|418|415|415|408|      font-size: 14px;
+419|419|416|416|409|    }
+420|420|417|417|410|    .order-summary-total {
+421|421|418|418|411|      display: flex;
+422|422|419|419|412|      justify-content: space-between;
+423|423|420|420|413|      font-size: 18px;
+424|424|421|421|414|      font-weight: 800;
+425|425|422|422|415|      padding-top: 8px;
+426|426|423|423|416|      border-top: 1px solid rgba(0,0,0,0.1);
+427|427|424|424|417|    }
+428|428|425|425|418|    .btn-submit {
+429|429|426|426|419|      width: 100%;
+430|430|427|427|420|      background: var(--accent);
+431|431|428|428|421|      color: white;
+432|432|429|429|422|      border: none;
+433|433|430|430|423|      padding: 16px;
+434|434|431|431|424|      border-radius: 18px;
+435|435|432|432|425|      font-size: 16px;
+436|436|433|433|426|      font-weight: 700;
+437|437|434|434|427|      cursor: pointer;
+438|438|435|435|428|    }
+439|439|436|436|429|    .btn-back {
+440|440|437|437|430|      width: 100%;
+441|441|438|438|431|      background: transparent;
+442|442|439|439|432|      color: var(--accent);
+443|443|440|440|433|      border: 2px solid var(--accent);
+444|444|441|441|434|      padding: 14px;
+445|445|442|442|435|      border-radius: 18px;
+446|446|443|443|436|      font-size: 15px;
+447|447|444|444|437|      font-weight: 600;
+448|448|445|445|438|      cursor: pointer;
+449|449|446|446|439|      margin-top: 10px;
+450|450|447|447|440|    }
+451|451|448|448|441|
+452|452|449|449|442|    /* Success screen */
+453|453|450|450|443|    .success-screen {
+454|454|451|451|444|      display: none;
+455|455|452|452|445|      text-align: center;
+456|456|453|453|446|      padding: 60px 20px;
+457|457|454|454|447|    }
+458|458|455|455|448|    .success-screen.active { display: block; }
+459|459|456|456|449|    .success-icon { font-size: 64px; margin-bottom: 16px; }
+460|460|457|457|450|    .success-screen h2 { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+461|461|458|458|451|    .success-screen p { color: var(--text-sec); margin-bottom: 24px; }
+462|462|459|459|452|    #success-details { font-size: 14px; color: var(--text); text-align: left; background: var(--border); padding: 16px; border-radius: 14px; }
+463|463|460|460|453|  </style>
+464|464|461|461|454|</head>
+465|465|462|462|455|<body>
+466|466|463|463|456|
+467|467|464|464|457|  <!-- Hero -->
+468|468|465|465|458|  <div class="hero">
+469|469|466|466|459|    <div class="hero-badge">🚜 Фермерский урожай</div>
+470|470|467|467|460|    <h1>Белая дача</h1>
+471|471|468|468|461|    <p>Свежие овощи прямо с грядки. Доставка на следующий день.</p>
+472|472|469|469|462|    <div class="hero-stats">
+473|473|470|470|463|      <div class="hero-stat">
+474|474|471|471|464|        <div class="hero-stat-val">7</div>
+475|475|472|472|465|        <div class="hero-stat-label">позиций</div>
+476|476|473|473|466|      </div>
+477|477|474|474|467|      <div class="hero-stat">
+478|478|475|475|468|        <div class="hero-stat-val">24ч</div>
+479|479|476|476|469|        <div class="hero-stat-label">доставка</div>
+480|480|477|477|470|      </div>
+481|481|478|478|471|      <div class="hero-stat">
+482|482|479|479|472|        <div class="hero-stat-val">100%</div>
+483|483|480|480|473|        <div class="hero-stat-label">свежее</div>
+484|484|481|481|474|      </div>
+485|485|482|482|475|    </div>
+486|486|483|483|476|  </div>
+487|487|484|484|477|
+488|488|485|485|478|  <!-- Catalog section -->
+489|489|486|486|479|  <div id="catalog-view">
+490|490|487|487|480|    <div class="category-section">
+491|491|488|488|481|      <div class="category-header">
+492|492|489|489|482|        <div class="category-title">🥬 Все овощи</div>
+493|493|490|490|483|        <div class="category-count">7 товаров</div>
+494|494|491|491|484|      </div>
+495|495|492|492|485|      <div class="products-scroll" id="scroll-main"></div>
+496|496|493|493|486|    </div>
+497|497|494|494|487|  </div>
+498|498|495|495|488|
+499|499|496|496|489|  <!-- Cart overlay -->
+500|500|497|497|490|  <div class="cart-overlay" id="cart-overlay">
+501|
